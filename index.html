@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<!-- After hosting, you may set this to the full HTTPS URL of your diagnostic.
+     The optional URL supports a script-driven hand-off from non-HTTPS contexts.
+     A separate generated HTTPS launcher also supports meta-refresh without JavaScript. -->
+<meta name="diagnostic-hosted-url" content="https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/">
+<title>ChatGPT Universal iPhone HTML Display and Browser Diagnostic Test V 2.0</title>
+<style>
+:root {
+  --ink:#16314f; --sub:#536779; --line:#dce4ec; --surface:#ffffff; --back:#f4f7fa;
+  --blue:#1d6fb8; --green:#00843d; --orange:#b35900; --purple:#7a3fb0;
+  --ruler:clamp(37px,11vw,52px); --stripe:clamp(18px,6vw,32px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+* {box-sizing:border-box}
+html {scroll-behavior:auto; overflow-x:clip; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+body {margin:0;min-width:0;color:var(--ink);font:14px/1.43 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--back); overflow-x:clip}
+button,select,input,textarea {font:inherit}
+button,select,input {touch-action:manipulation}
+button {cursor:pointer;min-height:44px;border-radius:9px;border:1px solid #a9b9cb;padding:9px 10px;color:#183957;background:white;font-weight:700}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible {outline:3px solid #1d6fb8;outline-offset:2px}
+button:active {transform:translateY(1px)}
+button.primary {background:#0c477b;border-color:#0c477b;color:#fff}
+button.subtle {background:#eaf2f8;border-color:#bed0df}
+button:disabled {opacity:.65;cursor:wait}
+a {color:#0a5e9e;text-underline-offset:3px}
+h1,h2,h3,p {margin-top:0}
+.graph {display:flex;align-items:stretch;position:relative;width:100%;min-width:0;min-height:1200px;background:#eef2f5}
+.ruler {position:relative;flex:none;width:var(--ruler);align-self:stretch;min-height:1200px;background:#eef3f8;border-right:1px solid #acbac8;z-index:0}
+.ruler .tick {position:absolute;left:0;right:0;height:1px;border-top:1px solid #9aa8b8;padding-left:3px;font-size:10px;line-height:13px;color:#54677d;white-space:nowrap}
+.ruler .tick.major {border-top:2px solid var(--ink);font-weight:800;color:var(--ink)}
+.bar {position:relative;flex:none;width:var(--stripe);min-height:1px;align-self:flex-start;contain:layout style;opacity:.91}
+.bar.vh {height:100vh;background:var(--blue)}
+.bar.svh {height:100vh;height:100svh;background:var(--green)}
+.bar.dvh {height:100vh;height:100dvh;background:var(--orange)}
+.bar.lvh {height:100vh;height:100lvh;background:var(--purple)}
+.bar-name {display:block;position:sticky;top:7px;text-align:center;color:#fff;font-weight:900;font-size:10px;line-height:1.1;overflow-wrap:anywhere;z-index:1;text-shadow:0 1px 2px #0006;min-height:23px;padding-top:5px}
+.bar-end {position:absolute;left:0;right:0;bottom:0;text-align:center;color:white;font-size:11px;font-weight:900;border-top:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.17);line-height:18px;height:20px}
+.lane {flex:1 1 0;min-width:0;position:relative;background:linear-gradient(180deg,#f9fbfd 0%,#f0f5f9 100%);border-left:1px solid #b5c3d0;border-right:1px solid #b5c3d0}
+.center-card {position:sticky;top:5px;max-height:calc(100dvh - 52px);overflow:auto;overscroll-behavior:contain;margin:5px 4px;padding:9px 9px 10px;border:1px solid #bfd0de;background:white;border-radius:10px;box-shadow:0 2px 8px #18355313;scrollbar-width:thin}
+.center-card h1 {font-size:clamp(12px,3.4vw,18px);line-height:1.2;margin:0 0 5px;overflow-wrap:anywhere}
+.version {font-size:11px;white-space:nowrap;font-weight:800;color:#58708b}
+.subhead {font-size:11px;color:var(--sub);margin:2px 0 7px}
+.script-state {display:inline-flex;max-width:100%;align-items:center;gap:5px;border-radius:7px;background:#b32721;color:#fff;padding:5px 7px;font-size:11px;line-height:1.2;font-weight:800;margin:2px 0 8px}
+.script-state.on {background:#00713e}
+.summary-state {font-weight:750;padding:7px 8px;background:#eef3f8;border-radius:8px;font-size:12px;line-height:1.35;margin-bottom:8px}
+.metrics {display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 0 7px}
+.metric {min-width:0;background:#f0f5f9;border:1px solid #e0e8ef;border-radius:6px;padding:5px 5px 6px}
+.metric .k {font-size:10px;color:#586b81;line-height:1.2;display:block}
+.metric .v {font-size:12px;line-height:1.25;font-weight:850;display:block;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.height-grid {display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px}
+.height-cell {min-width:0;border-radius:6px;color:#fff;padding:4px 6px;line-height:1.15;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+.height-cell span {display:block;opacity:.93;font-size:10px}
+.height-cell b {font-size:13px}
+.height-cell.c-vh {background:var(--blue)}.height-cell.c-svh {background:var(--green)}
+.height-cell.c-dvh {background:var(--orange)}.height-cell.c-lvh {background:var(--purple)}
+.controls {display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:0 0 7px}
+.controls .primary {grid-column:1 / -1}
+.controls button {font-size:11px;padding:7px 5px;min-width:0;line-height:1.2}
+.screenshot-note {font-size:11px;line-height:1.3;margin:5px 0 0;color:#415c74}
+#inline-details {font-size:11px;border-top:1px solid var(--line);padding-top:7px;margin-top:6px;white-space:pre-line;overflow-wrap:anywhere}
+#inline-details[hidden] {display:none}
+.no-js {color:white;background:#a92323;padding:10px;margin:8px;font-weight:700}
+.scroll-guide {position:absolute;top:1000px;left:2px;right:2px;text-align:center;font-size:10px;color:#5b758e;overflow-wrap:anywhere}
+.bottom-marker {position:fixed;bottom:0;left:0;right:0;height:34px;min-height:34px;z-index:20;border-top:2px solid #ae8500;background:#ffd23f;color:#16314f;font-size:clamp(10px,3.4vw,14px);font-weight:850;line-height:30px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;box-shadow:0 -1px 5px #0002}
+.bottom-marker.dynamic {position:absolute;bottom:auto;right:auto;will-change:top,left,width}
+.report {padding:18px clamp(12px,4vw,34px) calc(68px + var(--safe-bottom));margin:auto;max-width:980px}
+.report-head {padding:15px 16px;background:white;border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
+.report-head h2 {font-size:20px;margin-bottom:6px}
+.report-head p {margin:0;color:var(--sub);font-size:13px}
+.info-box {background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin:12px 0}
+.info-box h3 {margin-bottom:7px;font-size:16px}
+.info-box p {font-size:13px;color:#415a70}
+.muted {color:#5c7184}
+.small {font-size:12px}
+.run-log {min-height:36px;padding:9px 11px;background:#eaf2f8;border-radius:8px;font-size:12px;white-space:pre-wrap}
+.full-actions {display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.full-actions button {min-width:125px}
+.counts {display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.count {border:1px solid var(--line);border-radius:7px;background:#fff;padding:7px 9px;font-size:12px;font-variant-numeric:tabular-nums}
+.count b {display:block;font-size:17px}
+.result-group {margin:16px 0}
+.result-group h3 {font-size:16px;margin:0 0 6px}
+.test-row {padding:11px 11px 10px;border-top:1px solid #dbe4ed;display:flex;align-items:flex-start;gap:9px}
+.test-row:last-child {border-bottom:1px solid #dbe4ed}
+.test-main {flex:1;min-width:0}
+.test-name {font-weight:750;font-size:13px}
+.test-details {font-size:12px;color:#40566c;white-space:pre-line;overflow-wrap:anywhere;margin-top:4px}
+.pill {display:inline-block;flex:none;font-size:10px;font-weight:850;line-height:1.1;padding:5px 6px;border-radius:6px;white-space:nowrap;border:1px solid transparent}
+.pill.pass {background:#e5f4eb;color:#006c37;border-color:#badac9}
+.pill.fail {background:#f9e8e6;color:#a12b1f;border-color:#efc8c3}
+.pill.warning {background:#fff3d8;color:#855300;border-color:#eed79a}
+.pill.unavailable {background:#eeeef6;color:#5f527c;border-color:#d9d6e6}
+.pill.not-run,.pill.manual-check {background:#e9f0f6;color:#3c546d;border-color:#ced9e3}
+.manual-grid {display:grid;gap:10px}
+.manual-item {padding:11px;background:#f5f8fb;border:1px solid #dde6ef;border-radius:9px}
+.manual-item label {font-size:13px;font-weight:750;display:block;margin-bottom:4px}
+.manual-item p {font-size:12px;margin:0 0 6px;color:#4d6174}
+.manual-item select {width:100%;min-height:44px;padding:7px;border:1px solid #aebfcf;border-radius:7px;background:#fff;color:#183957}
+.keyboard-area {display:flex;flex-wrap:wrap;gap:8px}
+.keyboard-area input {flex:1 1 190px;min-height:44px;border-radius:8px;border:1px solid #9fb4c6;padding:7px 10px;min-width:0}
+.keyboard-area button {flex:none}
+pre {white-space:pre-wrap;overflow-wrap:anywhere;background:#eff4f8;padding:12px;border:1px solid #dce5ee;border-radius:8px;font-size:11px;max-height:320px;overflow:auto}
+.footer-note {margin-top:16px;font-size:12px;color:#5b7085}
+@media(min-width:780px){.center-card {padding:14px;max-width:400px;margin-left:auto;margin-right:auto}.center-card h1 {font-size:18px}.bar-name {font-size:11px}.controls button{font-size:12px}.metric .v{font-size:14px}}
+@media(max-width:359px){.ruler .tick {font-size:9px}.center-card{padding:7px 6px;margin:4px 2px;max-height:calc(100dvh - 48px)}.center-card h1 {font-size:12px}.subhead {font-size:10px}.metric{padding:4px 3px}.metric .k{font-size:9px}.metric .v{font-size:11px}.controls{gap:4px}.controls button{font-size:10px;padding:7px 2px}.screenshot-note{font-size:10px}}
+@media (prefers-reduced-motion: reduce) {button:active{transform:none}}
+@supports not (height:100dvh){.center-card{max-height:calc(100vh - 52px)}}
+
+/* Static preview fallback: everything here works even when JavaScript is blocked. */
+.preview-help {display:block;border:2px solid #c36417;background:#fff8e9;border-radius:9px;padding:9px 10px;margin:0 0 8px;font-size:12px;line-height:1.4;color:#533514}
+.preview-help strong {display:block;font-size:13px;margin-bottom:3px}
+.preview-help p {margin:5px 0}
+.preview-help a {color:#784000;font-weight:800;overflow-wrap:anywhere}
+.preview-help ol {padding-left:19px;margin:5px 0}
+body.js-ready .preview-help {display:none}
+body:not(.js-ready) .controls button {opacity:.50;pointer-events:none}
+body:not(.js-ready) .bottom-marker {display:none}
+.preview-edge-marker {position:absolute;top:calc(100svh - 36px);left:0;right:0;height:36px;background:#ffd23f;color:#16314f;border-top:3px solid #ac7800;font-weight:800;line-height:32px;text-align:center;z-index:10;font-size:clamp(10px,3vw,14px);box-shadow:0 -1px 4px #0002;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.js-ready .preview-edge-marker {display:none}
+@supports not (height:100svh){.preview-edge-marker{top:calc(100vh - 36px)}}
+.https-status {border-radius:7px;padding:5px 7px;background:#f0f5f9;font-size:11px;color:#324f67;margin:4px 0 8px;line-height:1.4}
+.https-status.good {background:#e3f3ea;color:#055f35}
+.https-setup {border:1px solid #d8e1eb;border-radius:10px;background:#f5f8fc;padding:12px;margin-top:9px}
+.https-setup label {display:block;font-weight:750;margin:0 0 7px;font-size:13px}
+.https-setup input {display:block;width:100%;min-width:0;padding:10px;border:1px solid #a7b8c9;border-radius:8px;background:#fff;min-height:44px;box-sizing:border-box}
+.https-actions {display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.https-actions button {min-width:145px}
+.https-explain {font-size:12px;line-height:1.5;color:#3e5c72}
+.https-explain strong {color:#16314f}
+#https-setup-status {min-height:22px;font-size:12px;font-weight:700}
+</style>
+</head>
+<body>
+<noscript><div class="no-js">JavaScript is not running. This viewer can display HTML and colours without executing the diagnostic. Use an HTTPS-hosted copy of the diagnostic in Safari or Chrome; do not rely on the downloaded-file preview.</div></noscript>
+
+
+<main id="graphic" class="graph" aria-label="Graphical viewport height comparison">
+  <div class="ruler" id="ruler" aria-label="Vertical screen-height ruler in CSS pixels"><div class="tick major" style="top:0">0</div><div class="tick" style="top:50px">50</div><div class="tick major" style="top:100px">100</div><div class="tick" style="top:150px">150</div><div class="tick major" style="top:200px">200</div><div class="tick" style="top:250px">250</div><div class="tick major" style="top:300px">300</div><div class="tick" style="top:350px">350</div><div class="tick major" style="top:400px">400</div><div class="tick" style="top:450px">450</div><div class="tick major" style="top:500px">500</div><div class="tick" style="top:550px">550</div><div class="tick major" style="top:600px">600</div><div class="tick" style="top:650px">650</div><div class="tick major" style="top:700px">700</div><div class="tick" style="top:750px">750</div><div class="tick major" style="top:800px">800</div><div class="tick" style="top:850px">850</div><div class="tick major" style="top:900px">900</div><div class="tick" style="top:950px">950</div><div class="tick major" style="top:1000px">1000</div><div class="tick" style="top:1050px">1050</div><div class="tick major" style="top:1100px">1100</div><div class="tick" style="top:1150px">1150</div><div class="tick major" style="top:1200px">1200</div></div>
+  <div class="bar vh" id="bar-vh" aria-label="Blue bar: 100vh"><span class="bar-name">vh</span><span class="bar-end">vh</span></div>
+  <div class="bar svh" id="bar-svh" aria-label="Green bar: 100svh"><span class="bar-name">svh</span><span class="bar-end">svh</span></div>
+  <section class="lane" id="central-lane" aria-label="Central diagnostics">
+    <div class="center-card" id="central-panel">
+      <h1>ChatGPT Universal iPhone HTML Display and Browser Diagnostic Test</h1>
+      <div class="version">V 2.0</div>
+      <p class="subhead">Any iPhone · Screen, browser and HTML diagnostics</p>
+      <div class="script-state" id="js-indicator" aria-live="polite">JavaScript: NOT running</div>
+      <aside class="preview-help" id="preview-help" role="alert">
+        <strong>Cannot run tests in this viewing mode</strong>
+        <p>The HTML and colour bands are visible, but the script has <strong>not started</strong>. This commonly happens when iPhone Files / Quick Look previews an HTML attachment.</p>
+        <p><strong>Use the HTTPS version:</strong> <a href="https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/">Open the diagnostic website</a> directly in Safari or Chrome. This downloaded file is <strong>not</strong> an HTTPS webpage.</p>
+        <ol><li>Open the HTTPS diagnostic website in Safari or Chrome.</li><li>Check that <strong>JavaScript: running</strong> turns green.</li><li>Select <strong>Run Test</strong>.</li></ol>
+        <p><strong>Website address:</strong> <a href="https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/">https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/</a></p>
+        <p><strong>Note:</strong> A file viewer may refuse automatic redirects or external links. In that case, open the HTTPS URL manually in the browser.</p>
+      </aside>
+      <div class="https-status" id="https-status" aria-live="polite">HTTPS website status: not yet checked</div>
+      <div class="summary-state" id="summary" aria-live="polite">Tests not run. Select Run Test.</div>
+      <div class="metrics" aria-label="Current viewport information">
+        <div class="metric"><span class="k">Browser</span><span class="v" id="m-browser">—</span></div>
+        <div class="metric"><span class="k">iOS / OS</span><span class="v" id="m-os">—</span></div>
+        <div class="metric"><span class="k">inner W × H</span><span class="v" id="m-inner">—</span></div>
+        <div class="metric"><span class="k">Visual W × H</span><span class="v" id="m-visual">—</span></div>
+        <div class="metric"><span class="k">clientHeight</span><span class="v" id="m-client">—</span></div>
+        <div class="metric"><span class="k">Screen W × H</span><span class="v" id="m-screen">—</span></div>
+        <div class="metric"><span class="k">Pixel ratio</span><span class="v" id="m-dpr">—</span></div>
+        <div class="metric"><span class="k">Orientation</span><span class="v" id="m-orientation">—</span></div>
+      </div>
+      <div class="height-grid" aria-label="Measured CSS viewport heights">
+        <div class="height-cell c-vh"><span>100vh</span><b id="h-vh">—</b></div>
+        <div class="height-cell c-svh"><span>100svh</span><b id="h-svh">—</b></div>
+        <div class="height-cell c-dvh"><span>100dvh</span><b id="h-dvh">—</b></div>
+        <div class="height-cell c-lvh"><span>100lvh</span><b id="h-lvh">—</b></div>
+      </div>
+      <div class="controls">
+        <button type="button" class="primary" id="run-btn">Run Test</button>
+        <button type="button" id="again-btn">Run Again</button>
+        <button type="button" id="details-btn" aria-expanded="false">Show Details</button>
+        <button type="button" id="copy-btn">Copy Report</button>
+      </div>
+      <div id="inline-details" hidden></div>
+      <p class="screenshot-note"><strong>Screenshot:</strong> Run the test, stay at the top, and take one screenshot without scrolling. Check that the yellow strip touches the visible bottom edge.</p>
+      <p class="screenshot-note"><a href="#report-head">Full diagnostic results ↓</a></p>
+    </div>
+    <div class="scroll-guide" aria-hidden="true">Scroll down and up to compare browser toolbar behaviour</div>
+  </section>
+  <div class="bar dvh" id="bar-dvh" aria-label="Brown-orange bar: 100dvh"><span class="bar-name">dvh</span><span class="bar-end">dvh</span></div>
+  <div class="bar lvh" id="bar-lvh" aria-label="Purple bar: 100lvh"><span class="bar-name">lvh</span><span class="bar-end">lvh</span></div>
+  <div class="preview-edge-marker" aria-label="Preview-only approximate small viewport boundary">Approx. preview boundary · 100svh</div>
+</main>
+
+<div id="bottom-marker" class="bottom-marker">Bottom of visible screen</div>
+
+<section class="report" id="report-head" aria-label="Detailed diagnostic report">
+  <div class="report-head">
+    <h2>Diagnostic results — V 2.0</h2>
+    <p>This file is read-only with respect to your device settings. It does not upload data, install software or change your iPhone configuration.</p>
+  </div>
+  <div class="info-box" id="https-guide">
+    <h3>HTTPS website and automatic launcher</h3>
+    <p><strong>Important:</strong> Downloading an HTML file does not make it an HTTPS website. A real HTTPS web address is required for reliable Safari/Chrome testing. The downloadable deployment ZIP contains an upload-ready <code>index.html</code>.</p>
+    <p class="https-explain"><strong>Publish:</strong> Upload <code>index.html</code> to an HTTPS static host (for example GitHub Pages). Open the resulting <code>https://</code> address in Safari or Chrome. No third-party JavaScript, images or network requests are required by the diagnostic itself.</p>
+    <div class="https-setup">
+      <label for="https-url">After publishing, paste the exact HTTPS address here</label>
+      <input id="https-url" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://your-site.example/index.html" aria-describedby="https-setup-status">
+      <div class="https-actions">
+        <button type="button" class="primary" id="open-https">Open HTTPS website</button>
+        <button type="button" id="make-launcher">Create automatic HTTPS launcher</button>
+      </div>
+      <div id="https-setup-status" aria-live="polite">No HTTPS site has been configured yet.</div>
+      <p class="https-explain">The generated launcher is a small HTML file containing an HTML <code>meta refresh</code> and a plain clickable HTTPS link. It does <strong>not</strong> require JavaScript to initiate a redirect when the viewer permits it. Some iPhone file previewers block redirects regardless; open its link directly if necessary. A webpage cannot forcibly switch between Safari and Chrome.</p>
+    </div>
+  </div>
+  <div class="info-box">
+    <h3>How to use this diagnostic</h3>
+    <p>Return to the top and tap <strong>Run Test</strong>. The results below will update. Then perform the separate manual checks: capture the initial screen, scroll down and up, rotate your phone, check zoom or larger text, and optionally open the keyboard. Use <strong>Copy Report</strong> to share the findings.</p>
+    <p><strong>Interpretation:</strong> `100vh`, `100svh`, `100dvh` and `100lvh` represent different viewport concepts. Different heights are normal on many mobile browsers. The yellow bar uses live viewport measurements only when JavaScript runs. A separate static yellow 100svh preview marker appears when scripting is blocked and is only an approximation; neither can prove that every physical screen pixel or browser-control area is available to a webpage.</p>
+    <div class="run-log" id="run-log" aria-live="polite">Not started.</div>
+    <div class="full-actions">
+      <button type="button" class="primary" id="run-full">Run Test</button>
+      <button type="button" id="copy-full">Copy Report</button>
+      <button type="button" id="scroll-top">Back to Graphic</button>
+    </div>
+    <div class="counts" id="counts" aria-label="Diagnostic counts"><span class="count"><b>0</b>Tests completed</span></div>
+  </div>
+  <div class="info-box" id="results-section">
+    <h3>Automated checks</h3>
+    <p class="muted small" id="results-intro">No diagnostic results yet. Press Run Test above.</p>
+    <div id="results"></div>
+  </div>
+  <div class="info-box">
+    <h3>Visual and interaction checks — manual confirmation</h3>
+    <p>Webpage code cannot see the browser interface or inspect an iPhone screenshot. Record these observations separately; they are not automatically marked PASS.</p>
+    <div class="manual-grid" id="manual-items">
+      <div class="manual-item" data-manual="Initial screenshot"><label for="manual-screenshot">1. Initial screenshot, without scrolling</label><p>Take a screenshot at the top of the page after running the test. Are the ruler, coloured bars, centre text and yellow bottom strip correctly shown?</p><select id="manual-screenshot"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Screen edges"><label for="manual-edges">2. Colour and screen-edge check</label><p>Check that the purple bar reaches the far-right content edge, the ruler reaches the left, and the middle information is readable.</p><select id="manual-edges"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Toolbar scrolling"><label for="manual-toolbar">3. Scroll and browser toolbars</label><p>Scroll down and up. Observe changes to the coloured heights and bottom marker. Did the layout stay usable?</p><select id="manual-toolbar"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Orientation"><label for="manual-orientation">4. Portrait and landscape</label><p>Rotate your iPhone. Check that content remains readable and that the display and measurements update.</p><select id="manual-orientation"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Zoom and larger text"><label for="manual-zoom">5. Zoom and text size</label><p>Pinch zoom or use larger browser text. Check whether content is clipped, overlapped or inaccessible.</p><select id="manual-zoom"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Keyboard"><label for="manual-keyboard">6. Optional on-screen keyboard</label><p>Open the keyboard using the input below. Check whether the central display remains accessible.</p><select id="manual-keyboard"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+    </div>
+  </div>
+  <div class="info-box">
+    <h3>Optional keyboard and text-size tests</h3>
+    <p>Tap the keyboard button to focus the input. The diagnostic records any change in available visual viewport height. The input does not send or save what you type.</p>
+    <div class="keyboard-area"><input id="keyboard-input" type="text" placeholder="Optional keyboard test" aria-label="Keyboard test input"><button type="button" id="keyboard-btn">Open Keyboard</button><button type="button" id="text-btn" aria-pressed="false">Larger Text</button></div>
+    <p class="small" id="keyboard-status">Keyboard test not started.</p>
+  </div>
+  <div class="info-box">
+    <h3>Full technical report</h3>
+    <p>Use Copy Report for a plain-text copy. If clipboard access is unavailable, select the text in the box below.</p>
+    <pre id="text-report" tabindex="0" aria-label="Selectable diagnostic report">Not yet run.</pre>
+  </div>
+  <p class="footer-note">ChatGPT Universal iPhone HTML Display and Browser Diagnostic Test — V 2.0. Standalone HTML • HTTPS-hosting ready • No diagnostic upload • No external libraries. This tool measures the webpage's capabilities, not the health of the iPhone hardware or its storage.</p>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  var VERSION='V 2.0';
+  var NAME='ChatGPT Universal iPhone HTML Display and Browser Diagnostic Test';
+  // Optional hosted-url setting. By default this is blank, because no HTTPS site
+  // can exist until the owner publishes index.html to an actual web host.
+  function validHttps(input){
+    try {var url=new URL(String(input||'').trim());return url.protocol==='https:'&&!!url.hostname&&!url.username&&!url.password?url.href:null;}catch(e){return null;}
+  }
+  var configuredHostedURL=validHttps((document.querySelector('meta[name="diagnostic-hosted-url"]')||{}).content);
+  function updateHttpStatus(){
+    var label=$('https-status');if(!label)return;
+    var p=location.protocol;
+    if(p==='https:') {label.textContent='HTTPS: active — secure website context. Run the diagnostic in this browser.';label.classList.add('good');}
+    else {label.textContent='HTTPS: not active ('+(p||'unknown')+'). '+(configuredHostedURL?'A hosted link is configured.':'An HTTPS website must be published before a secure link can be used.');label.classList.remove('good');}
+  }
+  function escapeHTML(v){return String(v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function getInputHostedURL(){var u=validHttps($('https-url').value);if(!u){setText('https-setup-status','Enter a complete HTTPS address, beginning with https://, before continuing.');return null;}return u;}
+  function openHosted(){var u=getInputHostedURL();if(u){setText('https-setup-status','Opening the HTTPS website in your current browser…');window.location.assign(u);}}
+  function makeLauncher(){
+    var u=getInputHostedURL();if(!u)return;
+    var safe=escapeHTML(u);
+    var launcher='<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="refresh" content="0; url='+safe+'"><title>Open iPhone HTML Diagnostic over HTTPS</title><style>body{font:18px/1.5 system-ui,sans-serif;padding:24px;max-width:650px;color:#16314f}a{color:#084d89;font-weight:700;overflow-wrap:anywhere}p{margin:12px 0}</style></head><body><h1>Open diagnostic via HTTPS</h1><p>Opening the secure diagnostic website…</p><p>If you are not redirected, open this link in Safari or Chrome:</p><p><a href="'+safe+'">'+safe+'</a></p><p>Some iPhone file previewers block redirects. If so, copy the link into Safari or Chrome directly.</p></body></html>';
+    try {
+      var objectURL=URL.createObjectURL(new Blob([launcher],{type:'text/html;charset=utf-8'}));
+      var a=document.createElement('a');a.href=objectURL;a.download='Open_ChatGPT_iPhone_Diagnostic_HTTPS.html';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(objectURL);},12000);
+      setText('https-setup-status','Launcher created. It contains a no-JavaScript HTML meta refresh and a visible HTTPS link.');
+    }catch(e){setText('https-setup-status','Could not create the launcher in this viewer: '+String(e&&e.message||e));}
+  }
+
+  var $=function(id){return document.getElementById(id);};
+  var req=['vh','svh','dvh','lvh'];
+  var events=[]; var tests=[]; var errors=[]; var runNumber=0; var lastRun=null;
+  var tracked={orientationChanges:0,resizeEvents:0,scrollEvents:0,visualEvents:0,keyboardEvents:0,liveEvents:0};
+  var startingOrientation=null; var currentOrientation=null; var keyboard={baseline:null,focused:false,delta:null};
+  var state={live:Object.create(null),heights:Object.create(null),safe:null};
+  var scheduling=false; var running=false; var lastTickCount=-1; var clipboardState='Not checked';
+  var oldValues=null; var viewportHistory=[];
+  function nf(n){return typeof n==='number'&&isFinite(n) ? (Math.round(n*10)/10).toString() : 'Unavailable';}
+  function px(n){return nf(n)+' px';}
+  function safeCall(fn, fallback){try{return fn();}catch(e){return fallback;}}
+  function number(n){return typeof n==='number'&&isFinite(n);}
+  function setText(id,val){var e=$(id);if(e)e.textContent=val;}
+  function box(r){return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height};}
+  function rect(el){return el&&el.getBoundingClientRect?box(el.getBoundingClientRect()):null;}
+  function getUA(){return navigator.userAgent||'';}
+  function detect(){
+    var u=getUA(), br='Unknown', bv='Not reliably identifiable', platform='Unknown', osv='Not reliably identifiable', engine='Not reliably identifiable';
+    var found;
+    if((found=u.match(/EdgiOS\/([\d.]+)/i))){br='Microsoft Edge';bv=found[1];}
+    else if((found=u.match(/CriOS\/([\d.]+)/i))){br='Google Chrome';bv=found[1];}
+    else if((found=u.match(/FxiOS\/([\d.]+)/i))){br='Mozilla Firefox';bv=found[1];}
+    else if((found=u.match(/OPiOS\/([\d.]+)/i))){br='Opera';bv=found[1];}
+    else if((found=u.match(/Version\/([\d.]+).*Safari/i)) && !/Android|Chrome\//i.test(u)){br='Safari';bv=found[1];}
+    else if((found=u.match(/Edg\/([\d.]+)/i))){br='Microsoft Edge';bv=found[1];}
+    else if((found=u.match(/Chrome\/([\d.]+)/i))){br='Google Chrome';bv=found[1];}
+    else if((found=u.match(/Firefox\/([\d.]+)/i))){br='Mozilla Firefox';bv=found[1];}
+    if(/iPhone|iPad|iPod/i.test(u) || (/Macintosh/i.test(u) && navigator.maxTouchPoints>1)){
+      platform=/iPad/i.test(u)?'iPadOS':'iOS / iPadOS';
+      var m=u.match(/(?:iPhone )?OS (\d+[_\d]*)/i);if(m)osv=m[1].replace(/_/g,'.');
+    } else if(/Android/i.test(u)){platform='Android';var a=u.match(/Android\s+([\d.]+)/);if(a)osv=a[1];}
+    else if(/Windows NT/i.test(u))platform='Windows';
+    else if(/Mac OS X/i.test(u))platform='macOS';
+    else if(/Linux/i.test(u))platform='Linux';
+    if(/AppleWebKit\/([\d.]+)/.test(u))engine='AppleWebKit user-agent token (not conclusive engine identification)';
+    if(/(iPhone|iPad|iPod)/.test(u)&&br==='Safari'&&typeof window.webkit==='undefined')engine='AppleWebKit user-agent token; engine not independently verified';
+    var model='Not reliably identifiable';
+    var cat=/iPhone/i.test(u)?'iPhone':/iPad/i.test(u)?'iPad':/Android/i.test(u)?'Android device':/Mobile/i.test(u)?'Mobile device':'Other or desktop';
+    if(platform==='iOS / iPadOS' && /Macintosh/.test(u) && navigator.maxTouchPoints>1)cat='Possible iPad (desktop-mode user agent)';
+    var embedded=/\b(WV|WebView)\b/i.test(u)?'Possible WebView / in-app viewer':'Not reliably identifiable';
+    return {browser:br,version:bv,platform:platform,osVersion:osv,category:cat,model:model,engine:engine,embedded:embedded,ua:u};
+  }
+  function orientation(){return window.innerWidth>window.innerHeight?'Landscape':'Portrait';}
+  function getSafe(){
+    var el=document.createElement('div');
+    el.style.cssText='position:absolute;pointer-events:none;left:-10000px;top:0;width:0;height:0;padding-top:env(safe-area-inset-top,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px)';
+    document.body.appendChild(el);
+    var s=getComputedStyle(el);
+    var out={top:parseFloat(s.paddingTop)||0,right:parseFloat(s.paddingRight)||0,bottom:parseFloat(s.paddingBottom)||0,left:parseFloat(s.paddingLeft)||0};
+    if(el.parentNode)el.parentNode.removeChild(el);return out;
+  }
+  function getLive(){
+    var vv=window.visualViewport, de=document.documentElement, b=document.body;
+    var data={
+      innerWidth:window.innerWidth,innerHeight:window.innerHeight,outerWidth:window.outerWidth,outerHeight:window.outerHeight,
+      clientWidth:de.clientWidth,clientHeight:de.clientHeight,scrollWidth:de.scrollWidth,scrollHeight:de.scrollHeight,
+      bodyScrollWidth:b.scrollWidth,bodyScrollHeight:b.scrollHeight,
+      screenWidth:screen.width,screenHeight:screen.height,screenAvailWidth:screen.availWidth,screenAvailHeight:screen.availHeight,
+      dpr:window.devicePixelRatio,scrollX:window.scrollX,scrollY:window.scrollY,orientation:orientation(),
+      vv:vv?{width:vv.width,height:vv.height,offsetLeft:vv.offsetLeft,offsetTop:vv.offsetTop,pageLeft:vv.pageLeft,pageTop:vv.pageTop,scale:vv.scale}:null,
+      fullscreen:safeCall(function(){return document.fullscreenElement!==null;},false),urlScheme:location.protocol||'Unknown'
+    };
+    return data;
+  }
+  function measuredHeights(){var obj={};for(var i=0;i<req.length;i++){var unit=req[i];obj[unit]=rect($('bar-'+unit)).height;}return obj;}
+  function sampled(){
+    var live=getLive();var h=measuredHeights();state.live=live;state.heights=h;state.safe=getSafe();
+    return {live:live,heights:h};
+  }
+  function updateRuler(){
+    var r=$('ruler');var h=state.heights;var highest=Math.max(1200,h.vh||0,h.svh||0,h.dvh||0,h.lvh||0);
+    var cap=Math.ceil(highest/50)*50;
+    if(cap===lastTickCount) return;
+    lastTickCount=cap;
+    while(r.firstChild)r.removeChild(r.firstChild);
+    for(var v=0;v<=cap;v+=50){var el=document.createElement('div');el.className='tick'+(v%100===0?' major':'');el.style.top=v+'px';el.textContent=String(v);r.appendChild(el);}
+    r.style.minHeight=(Math.max(cap,1200)+1)+'px';
+    $('graphic').style.minHeight=(Math.max(cap,1200)+1)+'px';
+  }
+  function updateBottomMarker(){
+    var e=$('bottom-marker'),vv=window.visualViewport;
+    if(vv&&number(vv.pageTop)&&number(vv.height)&&number(vv.pageLeft)&&number(vv.width)){
+      e.classList.add('dynamic');
+      e.style.top=Math.max(0,vv.pageTop+vv.height-e.offsetHeight)+'px';
+      e.style.left=vv.pageLeft+'px';
+      e.style.width=vv.width+'px';
+    }else{e.classList.remove('dynamic');e.style.top='';e.style.left='';e.style.width='';}
+  }
+  function refreshView(){
+    scheduling=false;
+    sampled();updateRuler();updateBottomMarker();
+    var d=detect(),l=state.live,h=state.heights;
+    setText('m-browser',d.browser+(d.version==='Not reliably identifiable'?'':' '+d.version));
+    setText('m-os',d.platform+(d.osVersion==='Not reliably identifiable'?'':' '+d.osVersion));
+    setText('m-inner',nf(l.innerWidth)+' × '+nf(l.innerHeight));
+    setText('m-visual',l.vv?nf(l.vv.width)+' × '+nf(l.vv.height):'Unavailable');
+    setText('m-client',px(l.clientHeight));
+    setText('m-screen',nf(l.screenWidth)+' × '+nf(l.screenHeight));
+    setText('m-dpr',nf(l.dpr));setText('m-orientation',l.orientation);
+    req.forEach(function(k){setText('h-'+k,px(h[k]));});
+    if(oldValues){
+      if(l.orientation!==oldValues.orientation){tracked.orientationChanges++;tracked.liveEvents++;events.push('Orientation: '+oldValues.orientation+' → '+l.orientation);}
+      if((Math.abs(l.innerWidth-oldValues.width)>1||Math.abs(l.innerHeight-oldValues.height)>1)){tracked.liveEvents++;events.push('Window size: '+nf(l.innerWidth)+' × '+nf(l.innerHeight));}
+      if(l.vv&&oldValues.visualHeight!==null&&Math.abs(l.vv.height-oldValues.visualHeight)>2){tracked.liveEvents++;events.push('Visual viewport height: '+px(l.vv.height));}
+      if(events.length>35)events=events.slice(-35);
+    }
+    var prev=viewportHistory.length?viewportHistory[viewportHistory.length-1]:null;
+    var moment={time:(new Date()).toLocaleTimeString(),orientation:l.orientation,windowHeight:l.innerHeight,visualHeight:l.vv?l.vv.height:null,scrollY:l.scrollY,vh:h.vh,svh:h.svh,dvh:h.dvh,lvh:h.lvh};
+    if(!prev||Math.abs(moment.windowHeight-prev.windowHeight)>1||moment.orientation!==prev.orientation||
+        (moment.visualHeight!==null&&prev.visualHeight!==null&&Math.abs(moment.visualHeight-prev.visualHeight)>1)||
+        Math.abs(moment.scrollY-prev.scrollY)>40||req.some(function(k){return Math.abs(moment[k]-prev[k])>1;})) {
+      viewportHistory.push(moment);
+      if(viewportHistory.length>30)viewportHistory=viewportHistory.slice(-30);
+    }
+    oldValues={orientation:l.orientation,width:l.innerWidth,height:l.innerHeight,visualHeight:l.vv?l.vv.height:null};
+    currentOrientation=l.orientation;
+    if(running===false&&runNumber>0){setText('run-log','Latest automated run: '+(lastRun?lastRun.toLocaleString():'Unknown')+'. Display metrics have updated; rerun tests to refresh their PASS/FAIL results.');}
+  }
+  function schedule(){if(scheduling)return;scheduling=true;requestAnimationFrame(refreshView);}
+  function result(group,name,status,details,expected,actual,action){
+    if(['PASS','FAIL','WARNING','UNAVAILABLE','NOT RUN','MANUAL CHECK'].indexOf(status)<0)status='WARNING';
+    tests.push({group:group,name:name,status:status,details:details||'',expected:expected||'',actual:actual||'',action:action||''});
+  }
+  function attempt(group,name,fn){try{fn();}catch(e){result(group,name,'FAIL','The diagnostic itself encountered an exception: '+String(e&&e.message||e),'Successful diagnostic execution','Runtime exception','Review script compatibility or error details.');errors.push('Test '+name+': '+String(e));}}
+  function hasSupport(prop,value){return !!(window.CSS&&CSS.supports&&safeCall(function(){return CSS.supports(prop,value);},false));}
+  function approx(a,b,t){return number(a)&&number(b)&&Math.abs(a-b)<=(t===undefined?2:t);}
+  function visBounds(){var l=state.live;return l.vv?{left:l.vv.offsetLeft,right:l.vv.offsetLeft+l.vv.width,top:l.vv.offsetTop,bottom:l.vv.offsetTop+l.vv.height}:{left:0,right:l.innerWidth,top:0,bottom:l.innerHeight};}
+  function geometryChecks(){
+    var h=state.heights, l=state.live;
+    attempt('Layout','Horizontal document overflow',function(){
+      var excess=Math.max(l.scrollWidth,l.bodyScrollWidth)-l.clientWidth;
+      result('Layout','Horizontal document overflow',excess>2?'FAIL':'PASS','Overflow is measured against the document client width; vertical scrolling is intentional.','No unintended horizontal document overflow','Excess '+px(Math.max(0,excess)),excess>2?'Inspect fixed widths, margins and elements extending beyond the viewport.':'');
+    });
+    attempt('Layout','Vertical test-page scrolling',function(){
+      var e=$('graphic'),rr=rect(e);var ok=l.scrollHeight>=Math.min(1190,rr.height-10);
+      result('Layout','Vertical test-page scrolling',ok?'PASS':'WARNING','The original 1,200 px demonstration is intentionally scrollable to test browser toolbar changes.','An extended test surface for scrolling','Page height '+px(l.scrollHeight));
+    });
+    attempt('Layout','Four bars: left-to-right alignment',function(){
+      var a=rect($('bar-vh')),b=rect($('bar-svh')),c=rect($('central-lane')),d=rect($('bar-dvh')),e=rect($('bar-lvh'));
+      var gap=Math.max(Math.abs(a.right-b.left),Math.abs(b.right-c.left),Math.abs(c.right-d.left),Math.abs(d.right-e.left));
+      var topOk=[a,b,c,d,e].every(function(x){return Math.abs(x.top-a.top)<2;});
+      var order=a.left<b.left&&b.left<c.left&&c.left<d.left&&d.left<e.left;
+      var ok=gap<=2&&topOk&&order;
+      result('Layout','Four bars: left-to-right alignment',ok?'PASS':'FAIL','Expected: ruler | blue vh | green svh | centre information | brown-orange dvh | purple lvh.','Ordered columns with no unintended gaps','Largest adjacent gap '+px(gap)+'; aligned tops: '+(topOk?'Yes':'No'),ok?'':'Inspect column widths and flex layout.');
+    });
+    attempt('Layout','Left and right screen edges',function(){
+      var ruler=rect($('ruler')),purple=rect($('bar-lvh'));
+      var ok=approx(ruler.left,0,1.5)&&approx(purple.right,l.clientWidth,2.5);
+      result('Layout','Left and right screen edges',ok?'PASS':'FAIL','Geometry verifies that the ruler begins at the left document edge and the purple bar ends at the right document edge. Actual physical visibility still requires a screenshot.','Left = 0; right = document client width','Left '+px(ruler.left)+'; right '+px(purple.right)+'; client '+px(l.clientWidth),ok?'':'Check body margins and flex sizing.');
+    });
+    attempt('Layout','Central panel fits its lane',function(){
+      var lane=rect($('central-lane')),panel=rect($('central-panel'));
+      var ok=panel.left>=lane.left-2&&panel.right<=lane.right+2&&panel.width>65;
+      result('Layout','Central panel fits its lane',ok?'PASS':'FAIL','Checks the central information area between green and brown-orange bars.','Panel contained in central lane','Panel '+px(panel.width)+'; lane '+px(lane.width),ok?'':'Reduce fixed margins, padding or text width.');
+    });
+    attempt('Layout','Required content: text clipping',function(){
+      var nodes=Array.prototype.slice.call(document.querySelectorAll('#central-panel h1,#central-panel .metric .v,#central-panel .subhead,#central-panel .version'));
+      var over=nodes.filter(function(n){return n.scrollWidth>n.clientWidth+2;});
+      result('Layout','Required content: text clipping',over.length?'FAIL':'PASS','Detects overflow of key headings and measured values within their own boxes. It cannot prove visual readability or external occlusion.','No sideways overflow in required labels',over.length+' potentially clipped element(s)',over.length?'Check word wrapping and panel typography.':'');
+    });
+    attempt('Layout','Bottom marker geometry',function(){
+      var m=rect($('bottom-marker')),v=visBounds();var delta=m.bottom-v.bottom;var ok=Math.abs(delta)<=3;
+      result('Layout','Bottom marker geometry',ok?'PASS':'FAIL','Measures alignment with the visual viewport when that API is available. Physical visibility behind system UI requires manual confirmation.','Marker bottom equals visible viewport bottom','Difference '+px(delta)+'; marker bottom '+px(m.bottom)+'; viewport bottom '+px(v.bottom),ok?'':'Check visual viewport offsets and fixed/absolute positioning.');
+    });
+    attempt('Layout','Ruler covers measured height',function(){
+      var rr=rect($('ruler'));var max=Math.max(h.vh,h.svh,h.dvh,h.lvh,1200);
+      result('Layout','Ruler covers measured height',rr.height+2>=max?'PASS':'FAIL','Ruler dynamically extends past the tallest coloured bar.','Ruler height ≥ tallest bar and ≥ 1,200 px','Ruler '+px(rr.height)+'; required '+px(max));
+    });
+    attempt('Layout','Visible-element geometry',function(){
+      var ids=['ruler','bar-vh','bar-svh','central-lane','central-panel','bar-dvh','bar-lvh','bottom-marker','run-btn'];
+      var fail=ids.filter(function(id){var el=$(id),r=rect(el),s=getComputedStyle(el);return !r||r.width<=0||r.height<=0||s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity)===0;});
+      result('Layout','Visible-element geometry',fail.length?'FAIL':'PASS','Checks for zero-size or CSS-hidden required elements. Does not inspect a screenshot.','All required elements have visible box geometry',fail.length?'Affected: '+fail.join(', '):'All '+ids.length+' required elements have nonzero boxes.');
+    });
+    attempt('Layout','Touch-control dimensions',function(){
+      var buttons=Array.prototype.slice.call(document.querySelectorAll('button'));
+      var fail=buttons.filter(function(el){var r=rect(el);return r.height<43||r.width<43;});
+      result('Layout','Touch-control dimensions',fail.length?'WARNING':'PASS','Checks 44 CSS px target size approximately. Actual touch response is checked manually.','Touch targets ≥ ~44 × 44 CSS px',fail.length?fail.length+' small target(s)':'All '+buttons.length+' buttons meet size target');
+    });
+    attempt('Layout','Safe-area exposed values',function(){
+      var s=state.safe;
+      result('Layout','Safe-area exposed values','PASS','Browser-computed inset values are reported; zero does not prove that the device has no notch or safe area.','Inset values are readable','Top '+px(s.top)+', Right '+px(s.right)+', Bottom '+px(s.bottom)+', Left '+px(s.left));
+    });
+  }
+  function heightChecks(){
+    var h=state.heights;
+    req.forEach(function(unit){attempt('CSS heights','100'+unit+' rendering',function(){
+      var support=hasSupport('height','100'+unit),actual=h[unit],heightOK=number(actual)&&actual>0;
+      var s=!support?'UNAVAILABLE':heightOK?'PASS':'FAIL';
+      result('CSS heights','100'+unit+' rendering',s,'This height is measured from the actual rendered '+unit+' bar using getBoundingClientRect().','CSS unit supported and element rendered','Supported: '+(support?'Yes':'No')+'; actual '+px(actual),!support?'Browser may lack this viewport unit. The bar uses a 100vh fallback.':'');
+    });});
+    attempt('CSS heights','Small / dynamic / large height ordering',function(){
+      var supported=['svh','dvh','lvh'].every(function(u){return hasSupport('height','100'+u);});
+      var good=h.svh<=h.dvh+3 && h.dvh<=h.lvh+3;
+      result('CSS heights','Small / dynamic / large height ordering',!supported?'UNAVAILABLE':good?'PASS':'WARNING','Different measured heights are normal. This test verifies only the expected svh ≤ dvh ≤ lvh ordering.','svh ≤ dvh ≤ lvh','svh '+px(h.svh)+'; dvh '+px(h.dvh)+'; lvh '+px(h.lvh));
+    });
+    attempt('CSS heights','Height versus visual viewport',function(){
+      var l=state.live;if(!l.vv){result('CSS heights','Height versus visual viewport','UNAVAILABLE','visualViewport API not exposed.','','');return;}
+      var delta=h.dvh-l.vv.height;
+      result('CSS heights','Height versus visual viewport','PASS','Informational comparison, NOT a pass/fail equality check: keyboard and zoom can change the visual viewport without changing CSS viewport units.','Report measured difference','100dvh − visual height = '+px(delta));
+    });
+    attempt('CSS heights','All four measurement values captured',function(){
+      var ok=req.every(function(u){return number(h[u])&&h[u]>0;});
+      result('CSS heights','All four measurement values captured',ok?'PASS':'FAIL','Includes 100lvh, which was missing from the numerical results of the reference file.','Four positive CSS height measurements',req.map(function(u){return u+': '+px(h[u]);}).join(' | '));
+    });
+  }
+  function softwareChecks(){
+    attempt('JavaScript','JavaScript and DOM update',function(){
+      var a=document.createElement('span');a.textContent='first';a.textContent='updated';var ok=a.textContent==='updated';
+      result('JavaScript','JavaScript and DOM update',ok?'PASS':'FAIL','JavaScript executed and successfully changed a DOM node.','DOM text changes correctly','Read-back: '+a.textContent);
+    });
+    attempt('JavaScript','JavaScript error monitoring',function(){
+      result('JavaScript','JavaScript error monitoring',errors.length?'WARNING':'PASS','Runtime and unhandled-promise errors are collected during this session.','No recorded runtime errors',errors.length?errors.length+' logged error(s)':'No recorded errors',errors.length?'See the full technical report for messages.':'');
+    });
+    attempt('Browser','Browser identification',function(){
+      var d=detect();result('Browser','Browser identification',d.browser==='Unknown'?'WARNING':'PASS','Browser name/version derive from exposed user-agent identifiers and may be obscured or changed.','Known browser where identifiable',d.browser+' '+d.version+(d.browser==='Unknown'?'; browser not reliably identifiable':''));
+    });
+    attempt('Browser','OS and model identification',function(){
+      var d=detect();result('Browser','OS and model identification',d.platform==='Unknown'?'WARNING':'PASS','Exact iPhone models generally cannot be reliably identified by a webpage. Never guess from screen dimensions.','Report available device data','Category: '+d.category+'; OS: '+d.platform+' '+d.osVersion+'; exact model: '+d.model);
+    });
+    attempt('Browser','Viewport meta tag',function(){
+      var el=document.querySelector('meta[name="viewport"]'),value=el&&el.getAttribute('content')||'';
+      var ok=/width=device-width/.test(value)&&/initial-scale\s*=\s*1/.test(value);
+      result('Browser','Viewport meta tag',ok?'PASS':'FAIL','Checks the mobile viewport declaration; does not disable zoom.','width=device-width and initial-scale=1',value||'Missing');
+    });
+    attempt('Browser','Visual viewport availability',function(){
+      var vv=state.live.vv;var ok=vv&&vv.height>0&&vv.width>0;
+      result('Browser','Visual viewport availability',ok?'PASS':'UNAVAILABLE','Useful for toolbar, pinch-zoom and keyboard observations.','Usable visualViewport measurements',ok?'Width '+px(vv.width)+', height '+px(vv.height)+', scale '+nf(vv.scale):'Not exposed');
+    });
+    attempt('Browser','Layout viewport measurements',function(){
+      var l=state.live;var ok=l.innerHeight>0&&l.innerWidth>0&&l.clientHeight>0&&l.clientWidth>0;
+      result('Browser','Layout viewport measurements',ok?'PASS':'FAIL','innerWidth, innerHeight and client dimensions are recorded.','Positive viewport dimensions','inner: '+px(l.innerWidth)+' × '+px(l.innerHeight)+'; client: '+px(l.clientWidth)+' × '+px(l.clientHeight));
+    });
+    attempt('Browser','Screen and pixel-ratio measurements',function(){
+      var l=state.live;var ok=l.screenWidth>0&&l.screenHeight>0&&l.dpr>0;
+      result('Browser','Screen and pixel-ratio measurements',ok?'PASS':'FAIL','Screen values are browser-exposed CSS pixels, not guaranteed physical pixel counts.','Positive screen values and DPR','Screen: '+px(l.screenWidth)+' × '+px(l.screenHeight)+'; DPR '+nf(l.dpr));
+    });
+    attempt('Browser','Window and screen-size consistency',function(){
+      var l=state.live;result('Browser','Window and screen-size consistency','PASS','Informational: outer/inner and screen dimensions may differ owing to browser UI, zoom and platform rules.','Record the dimensions','outer '+px(l.outerWidth)+' × '+px(l.outerHeight)+'; available screen '+px(l.screenAvailWidth)+' × '+px(l.screenAvailHeight));
+    });
+    attempt('Browser','Scroll positions and document size',function(){
+      var l=state.live;result('Browser','Scroll positions and document size','PASS','Records the current scroll offsets and scrollable dimensions. Vertical scrolling in the test graphic is intentional.','Record scroll positions','x '+px(l.scrollX)+'; y '+px(l.scrollY)+'; root scroll '+px(l.scrollWidth)+' × '+px(l.scrollHeight));
+    });
+    attempt('Browser','File-opening environment',function(){
+      var p=state.live.urlScheme,known=p==='https:';
+      result('Browser','File-opening environment',known?'PASS':'WARNING','HTTPS is recommended for full testing. Local previews, in-app WebViews and ordinary browsers can differ. A file viewer may restrict scripting or clipboard access.','Report identifiable URL scheme','Scheme '+p+'; secure context: '+String(!!window.isSecureContext));
+    });
+    attempt('Browser','Browser orientation detection',function(){
+      var l=state.live;
+      result('Browser','Browser orientation detection','PASS','Orientation is inferred from current window aspect ratio. A physical device orientation API may provide additional detail.','Report portrait or landscape',l.orientation+'; orientation changes observed: '+tracked.orientationChanges);
+    });
+    attempt('Browser','Viewport change monitoring',function(){
+      result('Browser','Viewport change monitoring','PASS','Resize, scroll, orientation and visualViewport event handlers are attached. Live values update; rerun tests for refreshed pass/fail results.','Event watchers active','Resize '+tracked.resizeEvents+'; scroll '+tracked.scrollEvents+'; visual '+tracked.visualEvents+'; orientation changes '+tracked.orientationChanges);
+    });
+    attempt('Browser','Pinch zoom support or observation',function(){
+      var v=state.live.vv;var ok=v&&number(v.scale);
+      result('Browser','Pinch zoom support or observation',ok?'PASS':'UNAVAILABLE','Reports visualViewport.scale when available; actual pinch-zoom must be tested by the user.','Zoom scale report',ok?'Current scale '+nf(v.scale):'Visual viewport scale unavailable');
+    });
+  }
+  function cssChecks(){
+    var features=[['Flexbox','display','flex',true],['CSS Grid','display','grid',true],['position: fixed','position','fixed',true],['position: sticky','position','sticky',false],['overflow: clip','overflow','clip',false],['border-box','box-sizing','border-box',true],['max-width','max-width','100%',true],['CSS clamp()','width','clamp(10px, 5vw, 20px)',false],['Dynamic viewport units','height','100dvh',false],['Small viewport units','height','100svh',false],['Large viewport units','height','100lvh',false],['Safe-area env()','padding-top','env(safe-area-inset-top, 0px)',false]];
+    features.forEach(function(x){attempt('CSS support',x[0],function(){var can=hasSupport(x[1],x[2]);result('CSS support',x[0],can?'PASS':x[3]?'FAIL':'UNAVAILABLE','CSS.supports() feature query. Essential features are required; optional features are reported as unavailable, with fallbacks where possible.','CSS property '+x[1]+': '+x[2],can?'Supported':'Not reported as supported',!can?'Browser may require a fallback.':'');});});
+    attempt('CSS support','Responsive media queries',function(){
+      var can=typeof window.matchMedia==='function';result('CSS support','Responsive media queries',can?'PASS':'UNAVAILABLE','Tests availability of matchMedia(), used for responsive and preference checks.','matchMedia available',can?'Available':'Unavailable');
+    });
+    attempt('CSS support','Text-size accessibility',function(){
+      var computed=getComputedStyle($('central-panel'));result('CSS support','Text-size accessibility','MANUAL CHECK','CSS computed text sizes are available, but large-text readability requires a real visual check.','Inspect with larger browser text','Computed font-size '+computed.fontSize+'; see manual check 5');
+    });
+  }
+  function envChecks(){
+    attempt('Environment','Local storage availability',function(){
+      var key='__iphone_diag_v20_probe__',ok=false,msg='';try{localStorage.setItem(key,'1');ok=localStorage.getItem(key)==='1';localStorage.removeItem(key);}catch(e){msg=String(e&&e.name||e);}
+      result('Environment','Local storage availability',ok?'PASS':'UNAVAILABLE','A temporary test key is removed immediately; no diagnostic report is stored.','Set, retrieve and remove temporary key',ok?'Available':msg||'Restricted');
+    });
+    attempt('Environment','Clipboard API availability',function(){
+      var has=!!(navigator.clipboard&&navigator.clipboard.writeText);
+      result('Environment','Clipboard API availability',has?'PASS':'WARNING','Actual clipboard copying requires the user to tap Copy Report and may depend on a secure context. A selectable text fallback is provided.','Clipboard API or selectable fallback',has?'navigator.clipboard.writeText available':'API absent; manual text selection supported');
+    });
+    attempt('Environment','Document visibility state',function(){
+      result('Environment','Document visibility state','PASS','Reports document visibility when supported.','State identifiable',document.visibilityState||'Not exposed');
+    });
+    attempt('Environment','Reduced-motion preference',function(){
+      var v=safeCall(function(){return matchMedia('(prefers-reduced-motion: reduce)').matches;},null);
+      result('Environment','Reduced-motion preference',v===null?'UNAVAILABLE':'PASS','Records the browser preference; the page uses minimal animation.','Preference exposed',v===null?'Unavailable':(v?'Reduce motion requested':'No reduced-motion request'));
+    });
+    attempt('Environment','Contrast preference',function(){
+      if(!window.matchMedia){result('Environment','Contrast preference','UNAVAILABLE','matchMedia is absent.');return;}
+      var more=safeCall(function(){return matchMedia('(prefers-contrast: more)').matches;},false);
+      var forced=safeCall(function(){return matchMedia('(forced-colors: active)').matches;},false);
+      result('Environment','Contrast preference','PASS','Records exposed contrast preferences, not a visual accessibility audit.','Preference states recorded','Prefers more contrast: '+more+'; forced colours: '+forced);
+    });
+    attempt('Environment','Possible device capability hints',function(){
+      var mem=typeof navigator.deviceMemory==='number'?navigator.deviceMemory+' GB':'Not exposed';
+      var cores=typeof navigator.hardwareConcurrency==='number'?String(navigator.hardwareConcurrency):'Not exposed';
+      result('Environment','Possible device capability hints','PASS','Informational only. Some iOS browsers do not expose hardware hints.','Report, never require','Device memory: '+mem+'; logical cores: '+cores);
+    });
+    attempt('Environment','Keyboard resize observation',function(){
+      var s=keyboard.delta===null?'Not triggered (optional)':('Measured visual height change: '+px(keyboard.delta));
+      result('Environment','Keyboard resize observation',keyboard.delta===null?'MANUAL CHECK':'PASS','Focus must be initiated by the user. Viewport reductions during keyboard use may be expected.','Optional user-initiated keyboard observation',s);
+    });
+    attempt('Environment','Actual touch and screenshot checks',function(){
+      result('Environment','Actual touch and screenshot checks','MANUAL CHECK','JavaScript cannot validate the appearance of a real screenshot or guarantee that a finger successfully hit every control.','User performs manual checks','Complete the six manual verification items below.');
+    });
+  }
+  function counts(){var c={PASS:0,FAIL:0,WARNING:0,UNAVAILABLE:0,'MANUAL CHECK':0,'NOT RUN':0};tests.forEach(function(x){c[x.status]++;});return c;}
+  function reportStatus(c){if(c.FAIL>0)return 'FAIL';if(c.WARNING>0)return 'WARNING';if(c.UNAVAILABLE>0||c['MANUAL CHECK']>0)return 'INCOMPLETE';return 'PASS';}
+  function makeReport(){
+    var d=detect(),l=state.live,h=state.heights,s=state.safe||{},c=counts(),manual=Array.prototype.slice.call(document.querySelectorAll('#manual-items [data-manual]')).map(function(n){return n.getAttribute('data-manual')+': '+n.querySelector('select').value;});
+    var manualProblems=manual.filter(function(x){return /Problem seen$/.test(x);});
+    var status=tests.length?reportStatus(c):'NOT RUN';
+    var lines=[NAME+' '+VERSION,'Generated: '+(new Date()).toLocaleString(),'Run number: '+runNumber,'Automated overall status: '+status,'Manual checks recorded as problems: '+manualProblems.length,'','DEVICE / BROWSER','Category: '+d.category,'Exact model: '+d.model,'OS: '+d.platform+' '+d.osVersion,'Browser: '+d.browser+' '+d.version,'Engine identification: '+d.engine,'Possible viewer: '+d.embedded,'URL scheme: '+l.urlScheme,'Secure context: '+String(!!window.isSecureContext),'Orientation: '+l.orientation,'Pixel ratio: '+nf(l.dpr),'User agent: '+d.ua,'','SCREEN / VIEWPORT','innerWidth × innerHeight: '+px(l.innerWidth)+' × '+px(l.innerHeight),'outerWidth × outerHeight: '+px(l.outerWidth)+' × '+px(l.outerHeight),'clientWidth × clientHeight: '+px(l.clientWidth)+' × '+px(l.clientHeight),'root scrollWidth × scrollHeight: '+px(l.scrollWidth)+' × '+px(l.scrollHeight),'body scrollWidth × scrollHeight: '+px(l.bodyScrollWidth)+' × '+px(l.bodyScrollHeight),'screen width × height: '+px(l.screenWidth)+' × '+px(l.screenHeight),'screen available width × height: '+px(l.screenAvailWidth)+' × '+px(l.screenAvailHeight),'scrollX / scrollY: '+px(l.scrollX)+' / '+px(l.scrollY),'visual viewport: '+(l.vv?px(l.vv.width)+' × '+px(l.vv.height):'Unavailable')];
+    if(l.vv){lines.push('visual offsets left/top: '+px(l.vv.offsetLeft)+' / '+px(l.vv.offsetTop),'visual pageLeft/pageTop: '+px(l.vv.pageLeft)+' / '+px(l.vv.pageTop),'visual scale: '+nf(l.vv.scale));}
+    lines.push('safe-area top/right/bottom/left: '+px(s.top)+' / '+px(s.right)+' / '+px(s.bottom)+' / '+px(s.left),'','CSS VIEWPORT HEIGHTS','100vh: '+px(h.vh),'100svh: '+px(h.svh),'100dvh: '+px(h.dvh),'100lvh: '+px(h.lvh),'100dvh − visual viewport height: '+(l.vv?px(h.dvh-l.vv.height):'Unavailable'),'Note: differences can be normal; a difference by itself is not a display fault.','','AUTOMATED CHECK COUNTS','PASS: '+c.PASS,'FAIL: '+c.FAIL,'WARNING: '+c.WARNING,'UNAVAILABLE: '+c.UNAVAILABLE,'MANUAL CHECK: '+c['MANUAL CHECK']);
+    var group='';tests.forEach(function(t){if(t.group!==group){group=t.group;lines.push('','=== '+group.toUpperCase()+' ===');}lines.push('['+t.status+'] '+t.name,'  '+t.details,'  Expected: '+t.expected,'  Actual: '+t.actual);if(t.action)lines.push('  Action: '+t.action);});
+    lines.push('','MANUAL OBSERVATIONS');manual.forEach(function(x){lines.push('- '+x);});
+    lines.push('','VIEWPORT HEIGHT SAMPLES (oldest to newest)');viewportHistory.forEach(function(v){
+      lines.push('- '+v.time+' '+v.orientation+'; window '+px(v.windowHeight)+'; visual '+(v.visualHeight===null?'n/a':px(v.visualHeight))+'; scrollY '+px(v.scrollY)+'; vh '+px(v.vh)+'; svh '+px(v.svh)+'; dvh '+px(v.dvh)+'; lvh '+px(v.lvh));
+    });
+    lines.push('','SESSION EVENTS');(events.length?events:['No viewport changes recorded yet']).forEach(function(x){lines.push('- '+x);});
+    lines.push('','RUNTIME ERRORS');(errors.length?errors:['None recorded']).forEach(function(x){lines.push('- '+x);});
+    lines.push('','PRIVACY','Standalone diagnostic. HTTPS hosting is optional but recommended. No third-party dependencies or diagnostic upload.','LIMITATIONS','Actual physical screen, OS overlays and screenshot appearance cannot be inspected by webpage JavaScript.','Browser and exact model identification can be restricted. A file preview may differ from Safari/Chrome.');
+    return lines.join('\n');
+  }
+  function renderTests(){
+    var target=$('results');while(target.firstChild)target.removeChild(target.firstChild);
+    var by={};var keys=[];tests.forEach(function(t){if(!by[t.group]){by[t.group]=[];keys.push(t.group);}by[t.group].push(t);});
+    keys.forEach(function(group){
+      var root=document.createElement('section');root.className='result-group';var h=document.createElement('h3');h.textContent=group+' ('+by[group].length+')';root.appendChild(h);
+      by[group].forEach(function(t){var row=document.createElement('div');row.className='test-row';var pill=document.createElement('span');pill.className='pill '+t.status.toLowerCase().replace(/ /g,'-');pill.textContent=t.status;
+        var main=document.createElement('div');main.className='test-main';var name=document.createElement('div');name.className='test-name';name.textContent=t.name;
+        var details=document.createElement('div');details.className='test-details';details.textContent=t.details+'\nExpected: '+t.expected+'\nActual: '+t.actual+(t.action?'\nSuggested action: '+t.action:'');
+        main.appendChild(name);main.appendChild(details);row.appendChild(pill);row.appendChild(main);root.appendChild(row);
+      });target.appendChild(root);
+    });
+    var c=counts(),status=reportStatus(c);var box=$('counts');while(box.firstChild)box.removeChild(box.firstChild);
+    [['PASS',c.PASS],['FAIL',c.FAIL],['WARNING',c.WARNING],['UNAVAILABLE',c.UNAVAILABLE],['MANUAL CHECK',c['MANUAL CHECK']]].forEach(function(pair){var e=document.createElement('span');e.className='count';var b=document.createElement('b');b.textContent=String(pair[1]);e.appendChild(b);e.appendChild(document.createTextNode(pair[0]));box.appendChild(e);});
+    setText('summary',status+' · '+c.PASS+' passed · '+c.FAIL+' failed · '+c.WARNING+' warnings · '+c.UNAVAILABLE+' unavailable.');
+    setText('results-intro',tests.length+' automated diagnostic entries completed. Manual observations remain separate.');
+    var brief= ['Automated status: '+status,'Tests: '+tests.length,'PASS '+c.PASS+'  FAIL '+c.FAIL+'  WARNING '+c.WARNING,'UNAVAILABLE '+c.UNAVAILABLE+'  MANUAL '+c['MANUAL CHECK'],'Browser: '+detect().browser,'Orientation: '+state.live.orientation,'Current heights: '+req.map(function(k){return k+' '+px(state.heights[k]);}).join(' | '),'','','Open the full report below for explanations and suggested actions.'];
+    setText('inline-details',brief.join('\n'));
+    setText('text-report',makeReport());
+  }
+  function runAll(){
+    if(running)return;
+    running=true;tests=[];runNumber++;setText('summary','Started running…');setText('run-log','Started running — run '+runNumber+' at '+new Date().toLocaleTimeString());
+    $('run-btn').disabled=true;$('again-btn').disabled=true;$('run-full').disabled=true;
+    // Let the "Started running" message reach the screen before executing the checks.
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      try{
+        refreshView();heightChecks();softwareChecks();cssChecks();geometryChecks();envChecks();
+        lastRun=new Date();renderTests();
+        setText('run-log','Finished — '+tests.length+' checks completed at '+lastRun.toLocaleTimeString()+'. Complete the manual screenshot and interaction checks for visual verification.');
+      }catch(e){errors.push('Main run: '+String(e&&e.message||e));setText('run-log','Finished with an internal diagnostic error: '+String(e));}
+      finally {running=false;$('run-btn').disabled=false;$('again-btn').disabled=false;$('run-full').disabled=false;}
+    });});
+  }
+  function copyReport(){
+    var message=makeReport();setText('text-report',message);
+    var done=function(){clipboardState='Copied';setText('run-log','Report copied. You can paste it into a support message.');};
+    var failed=function(){clipboardState='Restricted';var sel=window.getSelection();var range=document.createRange();range.selectNodeContents($('text-report'));sel.removeAllRanges();sel.addRange(range);setText('run-log','Clipboard access is unavailable in this browser/viewer. The full report text has been selected; use the iPhone copy menu.');};
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(message).then(done,failed);
+    }else{
+      var temp=document.createElement('textarea');temp.value=message;temp.style.cssText='position:fixed;opacity:0;left:0;top:0';document.body.appendChild(temp);temp.focus();temp.select();
+      var copied=false;try{copied=document.execCommand('copy');}catch(e){}temp.remove();if(copied)done();else failed();
+    }
+  }
+  function toggleDetails(){var el=$('inline-details'),button=$('details-btn');el.hidden=!el.hidden;button.setAttribute('aria-expanded',String(!el.hidden));button.textContent=el.hidden?'Show Details':'Hide Details';}
+  function keyboardFocus(){keyboard.baseline=state.live.vv?state.live.vv.height:null;keyboard.focused=true;keyboard.delta=null;$('keyboard-input').focus();setText('keyboard-status','Keyboard requested. Check whether the input and central panel remain visible.');}
+  function onKeyboardChange(){if(!keyboard.focused)return;schedule();var v=window.visualViewport;if(v&&keyboard.baseline!==null){keyboard.delta=keyboard.baseline-v.height;setText('keyboard-status','Visual viewport change during keyboard interaction: '+px(keyboard.delta)+'. A reduction may be normal.');}}
+  function setManual(){if(runNumber>0){setText('text-report',makeReport());var n=Array.prototype.slice.call(document.querySelectorAll('#manual-items select')).filter(function(x){return x.value==='Problem seen';}).length;if(n>0)setText('run-log','Manual review: '+n+' issue(s) reported. See manual observations in the full report.');}}
+  function wire(){
+    $('run-btn').addEventListener('click',runAll);$('again-btn').addEventListener('click',runAll);$('run-full').addEventListener('click',runAll);
+    $('details-btn').addEventListener('click',toggleDetails);$('copy-btn').addEventListener('click',copyReport);$('copy-full').addEventListener('click',copyReport);
+    $('scroll-top').addEventListener('click',function(){window.scrollTo(0,0);});
+    $('open-https').addEventListener('click',openHosted);$('make-launcher').addEventListener('click',makeLauncher);
+    $('keyboard-btn').addEventListener('click',keyboardFocus);
+    $('keyboard-input').addEventListener('focus',function(){if(!keyboard.focused){keyboard.baseline=state.live.vv?state.live.vv.height:null;keyboard.focused=true;}});
+    $('keyboard-input').addEventListener('blur',function(){keyboard.focused=false;setText('keyboard-status',keyboard.delta===null?'Keyboard test ended. No viewport change was recorded.':'Keyboard test ended; last recorded visual-height reduction '+px(keyboard.delta));});
+    $('text-btn').addEventListener('click',function(){var active=document.body.classList.toggle('larger-text');$('text-btn').setAttribute('aria-pressed',String(active));$('text-btn').textContent=active?'Normal Text':'Larger Text';
+      $('central-panel').style.fontSize=active?'120%':'';schedule();setText('run-log',active?'Larger diagnostic text selected; inspect for overlap and rerun the tests.':'Normal diagnostic text restored.');});
+    Array.prototype.slice.call(document.querySelectorAll('#manual-items select')).forEach(function(s){s.addEventListener('change',setManual);});
+    window.addEventListener('resize',function(){tracked.resizeEvents++;schedule();},{passive:true});
+    window.addEventListener('scroll',function(){tracked.scrollEvents++;schedule();},{passive:true});
+    window.addEventListener('orientationchange',function(){schedule();},{passive:true});
+    if(window.visualViewport){window.visualViewport.addEventListener('resize',function(){tracked.visualEvents++;onKeyboardChange();schedule();},{passive:true});window.visualViewport.addEventListener('scroll',function(){tracked.visualEvents++;onKeyboardChange();schedule();},{passive:true});}
+    window.addEventListener('error',function(e){errors.push(String(e.message||'Script error')+' @ '+(e.filename||'inline')+':'+(e.lineno||0));});
+    window.addEventListener('unhandledrejection',function(e){errors.push('Unhandled rejection: '+String(e.reason));});
+    document.addEventListener('visibilitychange',schedule);
+  }
+  // File viewers which block scripts never reach this point; the static warning
+  // and preview marker remain visible instead.
+  document.body.classList.add('js-ready');
+  $('js-indicator').textContent='JavaScript: running';$('js-indicator').classList.add('on');
+  updateHttpStatus();
+  if(configuredHostedURL && (location.protocol==='file:'||location.protocol==='http:')){
+    setText('summary','Opening configured HTTPS diagnostic…');
+    window.location.replace(configuredHostedURL);
+    return;
+  }
+  if(configuredHostedURL && $('https-url'))$('https-url').value=configuredHostedURL;
+  try{wire();refreshView();startingOrientation=currentOrientation;setText('summary','Ready. Select Run Test.');setText('run-log','Ready. Select Run Test. JavaScript is running. No tests have run yet.');}
+  catch(e){errors.push('Initialization: '+String(e));setText('summary','Initialization error: '+String(e&&e.message||e));}
+})();
+</script>
+</body>
+</html>
