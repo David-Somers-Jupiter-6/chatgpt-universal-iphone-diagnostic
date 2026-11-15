@@ -1,0 +1,10 @@
+{
+  "project": "ChatGPT Universal iPhone HTML Display and Browser Diagnostic Test",
+  "app_version": "2.0",
+  "owner": "David-Somers-Jupiter-6",
+  "repository": "David-Somers-Jupiter-6/chatgpt-universal-iphone-diagnostic",
+  "expected_pages_url": "https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/",
+  "status": "source files uploaded; GitHub Pages activation and successful deployment not yet confirmed",
+  "hosting": "GitHub Pages via GitHub Actions",
+  "generated_date": "2026-11-15"
+}
