@@ -4,11 +4,11 @@ A standalone, privacy-conscious HTML diagnostic for testing browser viewport ren
 
 ## Deployment state
 
-**Repository created and project deployment in progress — GitHub Pages publishing is not yet confirmed.** The anticipated website address is:
+**GitHub Pages deployed successfully on 15 November 2026 (GitHub Actions run 8).** The HTTPS website address is:
 
 `https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/`
 
-This URL will be usable only after the repository has been created, the files uploaded, GitHub Pages enabled, and a successful deployment completed.
+Deployment is confirmed successful by GitHub Actions. Open the HTTPS website on a real iPhone in Safari or Chrome to verify the device-specific browser diagnostics.
 
 ## Features
 

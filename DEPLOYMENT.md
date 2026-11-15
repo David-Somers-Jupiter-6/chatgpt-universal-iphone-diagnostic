@@ -1,16 +1,16 @@
-# GitHub Pages deployment checklist
+# GitHub Pages deployment checklist — deployed
 
 **Repository:** `David-Somers-Jupiter-6/chatgpt-universal-iphone-diagnostic`
 
-**Expected URL (not live until deployed):** https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/
+**GitHub Actions-confirmed deployment URL:** https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/
 
 ## GitHub account actions still required
 
 - [ ] Create a new public GitHub repository named `chatgpt-universal-iphone-diagnostic` under `David-Somers-Jupiter-6`.
 - [ ] Add all project files to `main`. When uploading from the GitHub browser UI, ensure the hidden `.github/workflows/` directory is included; uploading the ZIP archive without extracting it is insufficient.
-- [ ] Open **Settings → Pages**, and choose **GitHub Actions** as the publishing source.
+- [x] **Settings → Pages** source set to **GitHub Actions**.
 - [ ] Allow GitHub Actions in repository settings if the organisation/account has restricted them.
-- [ ] Check the **Actions** tab for a successful Pages deployment and verify the published URL.
+- [x] **GitHub Actions run 8** completed successfully on 15 November 2026.
 - [ ] Visit the HTTPS URL and run the diagnostic in Safari and in Chrome on real iPhones.
 
 ## Repository files and purposes

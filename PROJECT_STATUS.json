@@ -4,7 +4,11 @@
   "owner": "David-Somers-Jupiter-6",
   "repository": "David-Somers-Jupiter-6/chatgpt-universal-iphone-diagnostic",
   "expected_pages_url": "https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/",
-  "status": "source files uploaded; GitHub Pages activation and successful deployment not yet confirmed",
+  "status": "GitHub Pages deployment successful; live physical-iPhone verification pending",
   "hosting": "GitHub Pages via GitHub Actions",
-  "generated_date": "2026-11-15"
+  "generated_date": "2026-11-15",
+  "deployed_at": "2026-11-15T11:35:50Z",
+  "deploy_run_id": 43709662592,
+  "deployment_run_url": "https://github.com/David-Somers-Jupiter-6/chatgpt-universal-iphone-diagnostic/actions/runs/43709662592",
+  "verification": "GitHub Actions validation and deploy jobs passed; direct browser response not independently verified"
 }
