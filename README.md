@@ -46,3 +46,10 @@ Run `python3 scripts/validate_site.py` and `python3 scripts/check_javascript.py`
 ## Scope
 
 The tool does not change device configuration, install updates, discover exact iPhone model reliably, or validate the pixels covered by the iOS system interface. Diagnosed browser height discrepancies are not automatically failures.
+## Guided testing and screenshot evidence (V 2.0)
+
+The live diagnostic now prompts the user to **Run Test**, then presents six guided steps: portrait screenshot, down/up scroll, landscape rerun, Safari retest, zoom or larger text, and optional keyboard. Observable interactions are shown separately from **manual visual confirmation**.
+
+A user can select screenshot files and export a local ZIP containing the text report and screenshots. **Copy Report copies text only**. Where supported, **Share Evidence** opens the device share sheet. GitHub Pages has no upload endpoint, and the application never silently uploads personal data.
+
+See [Guided testing instructions](GUIDED_TESTING.md) for details and limitations.
