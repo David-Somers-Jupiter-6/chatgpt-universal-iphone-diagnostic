@@ -133,11 +133,40 @@ body.js-ready .preview-edge-marker {display:none}
 .https-explain {font-size:12px;line-height:1.5;color:#3e5c72}
 .https-explain strong {color:#16314f}
 #https-setup-status {min-height:22px;font-size:12px;font-weight:700}
+
+/* Guided checks, explicitly separate from automatic diagnostics. */
+.start-prompt {padding:7px 8px;margin:0 0 7px;border:1px solid #e0bb55;border-left:4px solid #bb7a00;background:#fff7dd;border-radius:8px;font-size:11px;line-height:1.3;font-weight:750}
+.start-prompt.done {border-color:#b2d7c5;border-left-color:#00843d;background:#eaf7ef}
+.guide-summary {position:sticky;top:4px;z-index:7;padding:12px;background:#eaf3fa;border-radius:9px;margin-bottom:13px;border:1px solid #d2e2ef}
+.guide-summary strong {font-size:15px}
+.guide-list {display:grid;gap:10px;margin:12px 0}
+.guide-step {border:1px solid #d8e3ed;background:#f6f9fc;border-radius:10px;padding:11px}
+.guide-step.completed {border-color:#79b99a;background:#ecf8f1}
+.guide-step.problem {border-color:#e4a59a;background:#fff3f1}
+.guide-step h4 {font-size:14px;line-height:1.3;margin:0 0 5px}
+.guide-step p {font-size:12px;margin:3px 0 7px}
+.guide-observed {font-size:12px;color:#37516b;background:#e9f1f7;padding:5px 7px;border-radius:6px;margin:6px 0}
+.guide-actions {display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.guide-actions button {font-size:12px;min-height:44px;padding:8px 11px}
+.guide-complete {background:#e1f4e7;border-color:#9cd1b1}
+.guide-problem {background:#fff0ee;border-color:#e6aea9}
+.guide-progress {font-weight:750;color:#16314f;padding:9px;background:#fff;border:1px solid #d8e3ed;border-radius:8px;margin:8px 0}
+#guide-next {font-size:13px;line-height:1.5;white-space:pre-line}
+.guide-link {display:block;font-size:11px;margin:0 0 7px}
+.guide-link[hidden]{display:none!important}
+#guide-section[hidden] {display:none}
+.evidence-input {display:block;width:100%;margin:9px 0;font-size:13px;max-width:100%;min-height:44px}
+.evidence-status {font-size:12px;line-height:1.4;background:#edf3f8;padding:9px;border-radius:8px;overflow-wrap:anywhere}
+.evidence-files {font-size:12px;line-height:1.45;padding-left:19px;overflow-wrap:anywhere}
+.evidence-actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.evidence-actions button {flex:1 1 180px}
+.guide-disclaimer {font-size:12px;color:#4a6178}
+@media (max-width:359px) {.start-prompt{font-size:10px;padding:5px}.guide-link{font-size:10px}}
+
 </style>
 </head>
 <body>
 <noscript><div class="no-js">JavaScript is not running. This viewer can display HTML and colours without executing the diagnostic. Use an HTTPS-hosted copy of the diagnostic in Safari or Chrome; do not rely on the downloaded-file preview.</div></noscript>
-
 
 <main id="graphic" class="graph" aria-label="Graphical viewport height comparison">
   <div class="ruler" id="ruler" aria-label="Vertical screen-height ruler in CSS pixels"><div class="tick major" style="top:0">0</div><div class="tick" style="top:50px">50</div><div class="tick major" style="top:100px">100</div><div class="tick" style="top:150px">150</div><div class="tick major" style="top:200px">200</div><div class="tick" style="top:250px">250</div><div class="tick major" style="top:300px">300</div><div class="tick" style="top:350px">350</div><div class="tick major" style="top:400px">400</div><div class="tick" style="top:450px">450</div><div class="tick major" style="top:500px">500</div><div class="tick" style="top:550px">550</div><div class="tick major" style="top:600px">600</div><div class="tick" style="top:650px">650</div><div class="tick major" style="top:700px">700</div><div class="tick" style="top:750px">750</div><div class="tick major" style="top:800px">800</div><div class="tick" style="top:850px">850</div><div class="tick major" style="top:900px">900</div><div class="tick" style="top:950px">950</div><div class="tick major" style="top:1000px">1000</div><div class="tick" style="top:1050px">1050</div><div class="tick major" style="top:1100px">1100</div><div class="tick" style="top:1150px">1150</div><div class="tick major" style="top:1200px">1200</div></div>
@@ -153,9 +182,10 @@ body.js-ready .preview-edge-marker {display:none}
         <strong>Cannot run tests in this viewing mode</strong>
         <p>The HTML and colour bands are visible, but the script has <strong>not started</strong>. This commonly happens when iPhone Files / Quick Look previews an HTML attachment.</p>
         <p><strong>Use the HTTPS version:</strong> <a href="https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/">Open the diagnostic website</a> directly in Safari or Chrome. This downloaded file is <strong>not</strong> an HTTPS webpage.</p>
-        <ol><li>Open the HTTPS diagnostic website in Safari or Chrome.</li><li>Check that <strong>JavaScript: running</strong> turns green.</li><li>Select <strong>Run Test</strong>.</li></ol>
+        <ol><li>Open the existing HTTPS website in Safari or Chrome.</li><li>Open the published link in Safari or Chrome.</li><li>When <strong>JavaScript: running</strong> turns green, select <strong>Run Test</strong>.</li></ol>
+        <p>The diagnostic is already hosted on GitHub Pages.</p>
         <p><strong>Website address:</strong> <a href="https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/">https://david-somers-jupiter-6.github.io/chatgpt-universal-iphone-diagnostic/</a></p>
-        <p><strong>Note:</strong> A file viewer may refuse automatic redirects or external links. In that case, open the HTTPS URL manually in the browser.</p>
+        <p><strong>Note:</strong> A file viewer may also refuse automatic redirects or external links. In that case, open the HTTPS URL manually in the browser.</p>
       </aside>
       <div class="https-status" id="https-status" aria-live="polite">HTTPS website status: not yet checked</div>
       <div class="summary-state" id="summary" aria-live="polite">Tests not run. Select Run Test.</div>
@@ -175,6 +205,7 @@ body.js-ready .preview-edge-marker {display:none}
         <div class="height-cell c-dvh"><span>100dvh</span><b id="h-dvh">—</b></div>
         <div class="height-cell c-lvh"><span>100lvh</span><b id="h-lvh">—</b></div>
       </div>
+      <div class="start-prompt" id="start-prompt" role="status" aria-live="polite">Step 1: Tap <strong>Run Test</strong> to begin.</div>
       <div class="controls">
         <button type="button" class="primary" id="run-btn">Run Test</button>
         <button type="button" id="again-btn">Run Again</button>
@@ -182,6 +213,7 @@ body.js-ready .preview-edge-marker {display:none}
         <button type="button" id="copy-btn">Copy Report</button>
       </div>
       <div id="inline-details" hidden></div>
+      <a class="guide-link" id="guide-link" href="#guide-section" hidden>Continue to guided checks ↓</a>
       <p class="screenshot-note"><strong>Screenshot:</strong> Run the test, stay at the top, and take one screenshot without scrolling. Check that the yellow strip touches the visible bottom edge.</p>
       <p class="screenshot-note"><a href="#report-head">Full diagnostic results ↓</a></p>
     </div>
@@ -226,6 +258,38 @@ body.js-ready .preview-edge-marker {display:none}
     </div>
     <div class="counts" id="counts" aria-label="Diagnostic counts"><span class="count"><b>0</b>Tests completed</span></div>
   </div>
+  <div class="info-box" id="guide-section" hidden>
+    <h3>Guided verification — complete after Run Test</h3>
+    <p>Work through the steps below. The page can observe some activity, but <strong>only you can confirm that the display looks correct</strong>. When an action is detected, the observation is shown without automatically marking the appearance as correct.</p>
+    <div class="guide-summary" role="status" aria-live="polite">
+      <strong>Next action</strong>
+      <p id="guide-next">Run the automated tests first.</p>
+      <div class="guide-progress" id="guide-progress">0 of 5 required checks confirmed; keyboard optional.</div>
+    </div>
+    <div class="guide-list" id="guide-list">
+      <div class="guide-step" data-guide="screenshot"><h4>1. Take a portrait screenshot</h4><p>At the top of the page, immediately after Run Test, without scrolling, take an iPhone screenshot. Check the ruler, all four bars, central panel and yellow bottom marker.</p><div class="guide-observed" id="seen-screenshot">Screenshot capture cannot be detected. You may attach it below.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="screenshot">Looks correct</button><button type="button" class="guide-problem" data-problem="screenshot">Problem seen</button><button type="button" data-clear="screenshot">Reset</button></div></div>
+      <div class="guide-step" data-guide="scroll"><h4>2. Scroll down and back up</h4><p>Scroll down at least 200 CSS px, then return near the top. Confirm that coloured heights and the yellow marker behave correctly.</p><div class="guide-observed" id="seen-scroll">Waiting to observe a down-and-up scroll.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="scroll">Looks correct</button><button type="button" class="guide-problem" data-problem="scroll">Problem seen</button><button type="button" data-clear="scroll">Reset</button></div></div>
+      <div class="guide-step" data-guide="rotate"><h4>3. Rotate to landscape and rerun</h4><p>Turn the iPhone sideways. Press Run Test again while landscape is active, then check alignment. Return to portrait when finished.</p><div class="guide-observed" id="seen-rotate">Waiting for landscape orientation and a test run.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="rotate">Looks correct</button><button type="button" class="guide-problem" data-problem="rotate">Problem seen</button><button type="button" data-clear="rotate">Reset</button></div></div>
+      <div class="guide-step" data-guide="safari"><h4>4. Repeat the diagnostic in Safari</h4><p>Open the same HTTPS URL manually in Safari, tap Run Test and capture a report. Browsers cannot launch each other automatically or verify a test made in a separate browser.</p><div class="guide-observed" id="seen-safari">A separate Safari session cannot be observed from Chrome.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="safari">Safari tested</button><button type="button" class="guide-problem" data-problem="safari">Problem seen</button><button type="button" data-clear="safari">Reset</button></div></div>
+      <div class="guide-step" data-guide="zoom"><h4>5. Check zoom or larger text</h4><p>Pinch to zoom or select Larger Text below. Check that buttons, headings and diagnostic values remain usable.</p><div class="guide-observed" id="seen-zoom">Waiting for zoom or Larger Text.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="zoom">Looks correct</button><button type="button" class="guide-problem" data-problem="zoom">Problem seen</button><button type="button" data-clear="zoom">Reset</button></div></div>
+      <div class="guide-step" data-guide="keyboard"><h4>6. Optional: open and close the keyboard</h4><p>Tap Open Keyboard in the optional keyboard section. Check that the screen and central panel remain usable. You can leave this step unchecked.</p><div class="guide-observed" id="seen-keyboard">Optional test not yet observed.</div><div class="guide-actions"><button type="button" class="guide-complete" data-complete="keyboard">Looks correct</button><button type="button" class="guide-problem" data-problem="keyboard">Problem seen</button><button type="button" data-clear="keyboard">Skip / reset</button></div></div>
+    </div>
+    <p class="guide-disclaimer">Screen-edge checking remains separately recorded under “Visual and interaction checks” below. An observed interaction is not proof of visual correctness. The result is incomplete until all required manual observations are confirmed.</p>
+    <button type="button" id="guide-top" class="subtle">Back to graphic / Run Test</button>
+  </div>
+  <div class="info-box" id="evidence-section">
+    <h3>Screenshots and evidence — user-controlled</h3>
+    <p><strong>Attach screenshots you have already taken</strong> using the iPhone photo/file picker. Nothing is uploaded to this website. You choose if, when and where to share the results.</p>
+    <label for="evidence-input"><strong>Choose screenshots (PNG, JPG, HEIC, WebP)</strong></label>
+    <input class="evidence-input" id="evidence-input" type="file" accept="image/*,.heic,.heif" multiple>
+    <div id="evidence-status" class="evidence-status" role="status" aria-live="polite">No screenshots selected. The Copy Report button copies text only.</div>
+    <ul class="evidence-files" id="evidence-files"></ul>
+    <div class="evidence-actions">
+      <button type="button" id="evidence-export" class="primary">Download Evidence ZIP</button>
+      <button type="button" id="evidence-share">Share Evidence…</button>
+    </div>
+    <p class="guide-disclaimer">The ZIP contains a text report and any images you selected. Copy Report cannot reliably copy a mixture of text and multiple images on iOS. Share Evidence uses your device's share sheet if supported. GitHub Pages cannot accept uploads without a separate, explicitly configured server.</p>
+  </div>
   <div class="info-box" id="results-section">
     <h3>Automated checks</h3>
     <p class="muted small" id="results-intro">No diagnostic results yet. Press Run Test above.</p>
@@ -240,6 +304,7 @@ body.js-ready .preview-edge-marker {display:none}
       <div class="manual-item" data-manual="Toolbar scrolling"><label for="manual-toolbar">3. Scroll and browser toolbars</label><p>Scroll down and up. Observe changes to the coloured heights and bottom marker. Did the layout stay usable?</p><select id="manual-toolbar"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
       <div class="manual-item" data-manual="Orientation"><label for="manual-orientation">4. Portrait and landscape</label><p>Rotate your iPhone. Check that content remains readable and that the display and measurements update.</p><select id="manual-orientation"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
       <div class="manual-item" data-manual="Zoom and larger text"><label for="manual-zoom">5. Zoom and text size</label><p>Pinch zoom or use larger browser text. Check whether content is clipped, overlapped or inaccessible.</p><select id="manual-zoom"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
+      <div class="manual-item" data-manual="Safari browser retest"><label for="manual-safari">7. Safari browser retest</label><p>In Safari, open the HTTPS link and run the diagnostic. Confirm that the report and layout work correctly. Cross-browser activity cannot be detected automatically.</p><select id="manual-safari"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
       <div class="manual-item" data-manual="Keyboard"><label for="manual-keyboard">6. Optional on-screen keyboard</label><p>Open the keyboard using the input below. Check whether the central display remains accessible.</p><select id="manual-keyboard"><option value="Not checked">Not checked</option><option value="Looks correct">Looks correct</option><option value="Problem seen">Problem seen</option></select></div>
     </div>
   </div>
@@ -271,7 +336,7 @@ body.js-ready .preview-edge-marker {display:none}
   function updateHttpStatus(){
     var label=$('https-status');if(!label)return;
     var p=location.protocol;
-    if(p==='https:') {label.textContent='HTTPS: active — secure website context. Run the diagnostic in this browser.';label.classList.add('good');}
+    if(p==='https:') {label.textContent='HTTPS: active — secure website context. Run the diagnostic in this browser.';label.classList.add('good');$('https-guide').hidden=true;}
     else {label.textContent='HTTPS: not active ('+(p||'unknown')+'). '+(configuredHostedURL?'A hosted link is configured.':'An HTTPS website must be published before a secure link can be used.');label.classList.remove('good');}
   }
   function escapeHTML(v){return String(v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -297,6 +362,8 @@ body.js-ready .preview-edge-marker {display:none}
   var state={live:Object.create(null),heights:Object.create(null),safe:null};
   var scheduling=false; var running=false; var lastTickCount=-1; var clipboardState='Not checked';
   var oldValues=null; var viewportHistory=[];
+  var guidedSeen={scrolledDown:false,scrollReturn:false,landscape:false,landscapeRun:false,zoom:false,keyboard:false};
+  var evidenceFiles=[]; var lastGuideSig=null;
   function nf(n){return typeof n==='number'&&isFinite(n) ? (Math.round(n*10)/10).toString() : 'Unavailable';}
   function px(n){return nf(n)+' px';}
   function safeCall(fn, fallback){try{return fn();}catch(e){return fallback;}}
@@ -405,6 +472,14 @@ body.js-ready .preview-edge-marker {display:none}
     }
     oldValues={orientation:l.orientation,width:l.innerWidth,height:l.innerHeight,visualHeight:l.vv?l.vv.height:null};
     currentOrientation=l.orientation;
+    if(runNumber>0){
+      if(l.scrollY>200)guidedSeen.scrolledDown=true;
+      if(guidedSeen.scrolledDown&&l.scrollY<45)guidedSeen.scrollReturn=true;
+      if(l.orientation==='Landscape')guidedSeen.landscape=true;
+      if(l.vv&&l.vv.scale>1.05)guidedSeen.zoom=true;
+      if(keyboard.focused&&keyboard.delta!==null&&keyboard.delta>80)guidedSeen.keyboard=true;
+      updateGuide();
+    }
     if(running===false&&runNumber>0){setText('run-log','Latest automated run: '+(lastRun?lastRun.toLocaleString():'Unknown')+'. Display metrics have updated; rerun tests to refresh their PASS/FAIL results.');}
   }
   function schedule(){if(scheduling)return;scheduling=true;requestAnimationFrame(refreshView);}
@@ -603,6 +678,9 @@ body.js-ready .preview-edge-marker {display:none}
     lines.push('safe-area top/right/bottom/left: '+px(s.top)+' / '+px(s.right)+' / '+px(s.bottom)+' / '+px(s.left),'','CSS VIEWPORT HEIGHTS','100vh: '+px(h.vh),'100svh: '+px(h.svh),'100dvh: '+px(h.dvh),'100lvh: '+px(h.lvh),'100dvh − visual viewport height: '+(l.vv?px(h.dvh-l.vv.height):'Unavailable'),'Note: differences can be normal; a difference by itself is not a display fault.','','AUTOMATED CHECK COUNTS','PASS: '+c.PASS,'FAIL: '+c.FAIL,'WARNING: '+c.WARNING,'UNAVAILABLE: '+c.UNAVAILABLE,'MANUAL CHECK: '+c['MANUAL CHECK']);
     var group='';tests.forEach(function(t){if(t.group!==group){group=t.group;lines.push('','=== '+group.toUpperCase()+' ===');}lines.push('['+t.status+'] '+t.name,'  '+t.details,'  Expected: '+t.expected,'  Actual: '+t.actual);if(t.action)lines.push('  Action: '+t.action);});
     lines.push('','MANUAL OBSERVATIONS');manual.forEach(function(x){lines.push('- '+x);});
+    lines.push('','GUIDED CHECK PROGRESS','Required completed: '+requiredGuideDone()+' / 5','Scroll down and back observed: '+(guidedSeen.scrollReturn?'Yes':'No'),'Landscape rerun observed: '+(guidedSeen.landscapeRun?'Yes':'No'),'Zoom or text enlargement observed: '+(guidedSeen.zoom?'Yes':'No'),'Keyboard viewport change observed: '+(guidedSeen.keyboard?'Yes':'No'));
+    lines.push('','USER-SELECTED SCREENSHOT FILES (not automatically uploaded)');(evidenceFiles.length?evidenceFiles.map(function(f){return f.name+' ('+f.size+' bytes)'}):['None selected']).forEach(function(x){lines.push('- '+x);});
+    lines.push('A plain-text clipboard copy does not include image pixels. Download Evidence ZIP or Share Evidence to include selected screenshots.');
     lines.push('','VIEWPORT HEIGHT SAMPLES (oldest to newest)');viewportHistory.forEach(function(v){
       lines.push('- '+v.time+' '+v.orientation+'; window '+px(v.windowHeight)+'; visual '+(v.visualHeight===null?'n/a':px(v.visualHeight))+'; scrollY '+px(v.scrollY)+'; vh '+px(v.vh)+'; svh '+px(v.svh)+'; dvh '+px(v.dvh)+'; lvh '+px(v.lvh));
     });
@@ -630,6 +708,65 @@ body.js-ready .preview-edge-marker {display:none}
     setText('inline-details',brief.join('\n'));
     setText('text-report',makeReport());
   }
+  function guideStatus(key){var sel=$('manual-'+({screenshot:'screenshot',scroll:'toolbar',rotate:'orientation',safari:'safari',zoom:'zoom',keyboard:'keyboard'}[key]));return sel?sel.value:'Not checked';}
+  function requiredGuideDone(){return ['screenshot','scroll','rotate','safari','zoom'].filter(function(k){return guideStatus(k)!=='Not checked';}).length;}
+  function updateGuide(){
+    if(!runNumber)return;
+    $('guide-section').hidden=false;
+    $('guide-link').hidden=false;
+    var attached=evidenceFiles.length;
+    setText('seen-screenshot',attached?attached+' screenshot file(s) selected (you must still confirm they look correct).':'Cannot detect screenshot capture. Attach screenshots below if desired.');
+    setText('seen-scroll',guidedSeen.scrollReturn?'Down-and-up scroll detected; visually confirm the layout.':guidedSeen.scrolledDown?'Scroll down detected; return near the top.':'Waiting to observe scrolling down and back up.');
+    setText('seen-rotate',guidedSeen.landscapeRun?'Landscape Run Test recorded. Confirm its appearance.':guidedSeen.landscape?'Landscape detected — tap Run Test while landscape.':'Waiting for landscape orientation and a test run.');
+    setText('seen-safari',detect().browser==='Safari'?'This session is Safari. Confirm a Safari Run Test here.':'Separate Safari usage cannot be observed from this browser.');
+    setText('seen-zoom',guidedSeen.zoom?'Zoom or Larger Text use observed; visually confirm.':'No zoom or Larger Text change observed yet.');
+    setText('seen-keyboard',guidedSeen.keyboard?'Keyboard-related viewport reduction observed; visually confirm.':'Optional; keyboard use not confirmed.');
+    ['screenshot','scroll','rotate','safari','zoom','keyboard'].forEach(function(k){var item=document.querySelector('[data-guide="'+k+'"]');if(!item)return;item.classList.toggle('completed',guideStatus(k)==='Looks correct');item.classList.toggle('problem',guideStatus(k)==='Problem seen');});
+    var count=requiredGuideDone(),problems=['screenshot','scroll','rotate','safari','zoom','keyboard'].filter(function(k){return guideStatus(k)==='Problem seen';});
+    setText('guide-progress',count+' of 5 required confirmations recorded · '+problems.length+' reported problem(s) · keyboard optional');
+    var next={screenshot:'Take an initial portrait screenshot without scrolling; check the ruler, bars and yellow marker. Then select Looks correct or Problem seen.',scroll:'Scroll at least 200 px down and back near the top. Confirm the bars and yellow marker behave correctly.',rotate:'Rotate into landscape, select Run Test, check the layout, and record your observation.',safari:'Open this HTTPS website manually in Safari, run the test again and record the Safari outcome.',zoom:'Pinch zoom or use Larger Text, then confirm content remains readable.'};
+    var first=['screenshot','scroll','rotate','safari','zoom'].find(function(k){return guideStatus(k)==='Not checked';});
+    setText('guide-next',first?next[first]:(problems.length?'All required steps recorded, but problems were reported. Download or share an evidence ZIP with your screenshots and report.':'All five required steps have been recorded. Optionally check the keyboard, then download or share your report and screenshots.'));
+    var header=$('start-prompt');header.classList.add('done');
+    var briefNext={screenshot:'take portrait screenshot',scroll:'scroll down and back up',rotate:'rotate and rerun',safari:'repeat test in Safari',zoom:'check zoom or larger text'};
+    header.textContent=first?'Tests finished. Next: '+briefNext[first]+'. Open Guided Checks below.':'All required checks recorded. Export or share your evidence.';
+    if(runNumber>0){var sig=count+'|'+problems.length+'|'+guidedSeen.scrollReturn+'|'+guidedSeen.scrolledDown+'|'+guidedSeen.landscape+'|'+guidedSeen.landscapeRun+'|'+guidedSeen.zoom+'|'+guidedSeen.keyboard+'|'+attached+'|'+['screenshot','scroll','rotate','safari','zoom','keyboard'].map(guideStatus).join('|');if(lastGuideSig!==sig){lastGuideSig=sig;setText('text-report',makeReport());}}
+  }
+  function setGuideManual(key,val){var map={screenshot:'manual-screenshot',scroll:'manual-toolbar',rotate:'manual-orientation',safari:'manual-safari',zoom:'manual-zoom',keyboard:'manual-keyboard'};var sel=$(map[key]);if(sel){sel.value=val;setManual();updateGuide();}}
+  async function bytesFor(file){if(file.arrayBuffer)return new Uint8Array(await file.arrayBuffer());return new Promise(function(resolve,reject){var fr=new FileReader();fr.onload=function(){resolve(new Uint8Array(fr.result));};fr.onerror=function(){reject(fr.error||new Error('File read failed'));};fr.readAsArrayBuffer(file);});}
+  var utf8=function(s){return new TextEncoder().encode(s);};
+  function crc32(b){var c=-1;for(var i=0;i<b.length;i++){c^=b[i];for(var j=0;j<8;j++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^(-1))>>>0;}
+  function writeZip(entries){
+    var parts=[],central=[],offset=0,encoder=new TextEncoder();
+    function u16(v){return [v&255,(v>>>8)&255]}function u32(v){return [v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255]}
+    entries.forEach(function(e){var n=encoder.encode(e.name),b=e.bytes,c=crc32(b),sz=b.length;
+      var local=new Uint8Array([80,75,3,4,...u16(20),...u16(0x0800),...u16(0),0,0,0,0,...u32(c),...u32(sz),...u32(sz),...u16(n.length),...u16(0)]);
+      parts.push(local,n,b);
+      central.push(new Uint8Array([80,75,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),0,0,0,0,...u32(c),...u32(sz),...u32(sz),...u16(n.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset)]),n);
+      offset+=local.length+n.length+b.length;
+    });
+    var csize=central.reduce(function(a,v){return a+v.length;},0);
+    parts.push.apply(parts,central);
+    parts.push(new Uint8Array([80,75,5,6,0,0,0,0,...u16(entries.length),...u16(entries.length),...u32(csize),...u32(offset),0,0]));
+    return new Blob(parts,{type:'application/zip'});
+  }
+  async function evidenceBundle(){var entries=[{name:'Diagnostic_Report.txt',bytes:utf8(makeReport())}];
+    var used={};for(var i=0;i<evidenceFiles.length;i++){var f=evidenceFiles[i],clean=f.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,90)||('screenshot_'+(i+1)+'.png');var name='screenshots/'+(i+1)+'_'+clean;if(used[name])name='screenshots/'+(i+1)+'_duplicate_'+clean;used[name]=true;entries.push({name:name,bytes:await bytesFor(f)});}
+    return {blob:writeZip(entries),files:entries.length};
+  }
+  function saveBlob(blob,name){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},30000);}
+  async function exportEvidence(){var b=$('evidence-export');b.disabled=true;setText('evidence-status','Preparing report and selected screenshots locally…');try{var pack=await evidenceBundle();saveBlob(pack.blob,'ChatGPT_iPhone_Diagnostic_V2_Evidence.zip');setText('evidence-status','Evidence ZIP prepared: text report + '+evidenceFiles.length+' screenshot(s). No data was uploaded.');}catch(e){setText('evidence-status','Could not create ZIP here: '+String(e.message||e)+'. Use Copy Report and share screenshots separately.');}finally{b.disabled=false;}}
+  async function shareEvidence(){var btn=$('evidence-share');btn.disabled=true;try{if(!navigator.share||!navigator.canShare){setText('evidence-status','Native sharing is unavailable. Use Download Evidence ZIP, or copy the report and send screenshots separately.');return;}
+    var pack=await evidenceBundle(),f=new File([pack.blob],'ChatGPT_iPhone_Diagnostic_V2_Evidence.zip',{type:'application/zip'});
+    if(!navigator.canShare({files:[f]})){setText('evidence-status','This browser cannot share ZIP files directly. Use Download Evidence ZIP.');return;}
+    await navigator.share({title:'iPhone diagnostic evidence',files:[f]});setText('evidence-status','Share sheet closed. Any delivery was controlled by your chosen app.');
+  }catch(e){setText('evidence-status',e.name==='AbortError'?'Sharing cancelled; nothing was sent by this page.':'Sharing failed: '+String(e.message||e)+'. Download the ZIP instead.');}finally{btn.disabled=false;}}
+  function selectEvidence(){var list=Array.prototype.slice.call($('evidence-input').files||[]),max=40*1024*1024,accepted=[],total=0,rejected=[];
+    list.forEach(function(f){if(!(/^image\//i.test(f.type)||/\.(png|jpg|jpeg|webp|heic|heif)$/i.test(f.name))){rejected.push(f.name+' (not an image)');return;}if(accepted.length>=8||f.size>12*1024*1024||total+f.size>max){rejected.push(f.name+' (file limit: 8 images, 12 MB each, 40 MB total)');return;}accepted.push(f);total+=f.size;});
+    evidenceFiles=accepted;var ul=$('evidence-files');ul.textContent='';accepted.forEach(function(f){var li=document.createElement('li');li.textContent=f.name+' ('+(f.size/1048576).toFixed(1)+' MB)';ul.appendChild(li);});
+    setText('evidence-status',accepted.length+' image(s) selected locally; '+(total/1048576).toFixed(1)+' MB. '+(rejected.length?'Not included: '+rejected.join('; '):'No uploads have occurred.'));
+    if(runNumber){updateGuide();setText('text-report',makeReport());}
+  }
   function runAll(){
     if(running)return;
     running=true;tests=[];runNumber++;setText('summary','Started running…');setText('run-log','Started running — run '+runNumber+' at '+new Date().toLocaleTimeString());
@@ -638,7 +775,7 @@ body.js-ready .preview-edge-marker {display:none}
     requestAnimationFrame(function(){requestAnimationFrame(function(){
       try{
         refreshView();heightChecks();softwareChecks();cssChecks();geometryChecks();envChecks();
-        lastRun=new Date();renderTests();
+        lastRun=new Date();if(state.live.orientation==='Landscape')guidedSeen.landscapeRun=true;renderTests();updateGuide();
         setText('run-log','Finished — '+tests.length+' checks completed at '+lastRun.toLocaleTimeString()+'. Complete the manual screenshot and interaction checks for visual verification.');
       }catch(e){errors.push('Main run: '+String(e&&e.message||e));setText('run-log','Finished with an internal diagnostic error: '+String(e));}
       finally {running=false;$('run-btn').disabled=false;$('again-btn').disabled=false;$('run-full').disabled=false;}
@@ -657,17 +794,22 @@ body.js-ready .preview-edge-marker {display:none}
   }
   function toggleDetails(){var el=$('inline-details'),button=$('details-btn');el.hidden=!el.hidden;button.setAttribute('aria-expanded',String(!el.hidden));button.textContent=el.hidden?'Show Details':'Hide Details';}
   function keyboardFocus(){keyboard.baseline=state.live.vv?state.live.vv.height:null;keyboard.focused=true;keyboard.delta=null;$('keyboard-input').focus();setText('keyboard-status','Keyboard requested. Check whether the input and central panel remain visible.');}
-  function onKeyboardChange(){if(!keyboard.focused)return;schedule();var v=window.visualViewport;if(v&&keyboard.baseline!==null){keyboard.delta=keyboard.baseline-v.height;setText('keyboard-status','Visual viewport change during keyboard interaction: '+px(keyboard.delta)+'. A reduction may be normal.');}}
-  function setManual(){if(runNumber>0){setText('text-report',makeReport());var n=Array.prototype.slice.call(document.querySelectorAll('#manual-items select')).filter(function(x){return x.value==='Problem seen';}).length;if(n>0)setText('run-log','Manual review: '+n+' issue(s) reported. See manual observations in the full report.');}}
+  function onKeyboardChange(){if(!keyboard.focused)return;schedule();var v=window.visualViewport;if(v&&keyboard.baseline!==null){keyboard.delta=keyboard.baseline-v.height;if(keyboard.delta>80)guidedSeen.keyboard=true;setText('keyboard-status','Visual viewport change during keyboard interaction: '+px(keyboard.delta)+'. A reduction may be normal.');}}
+  function setManual(){    if(runNumber>0){setText('text-report',makeReport());updateGuide();var n=Array.prototype.slice.call(document.querySelectorAll('#manual-items select')).filter(function(x){return x.value==='Problem seen';}).length;if(n>0)setText('run-log','Manual review: '+n+' issue(s) reported. See manual observations in the full report.');}}
   function wire(){
     $('run-btn').addEventListener('click',runAll);$('again-btn').addEventListener('click',runAll);$('run-full').addEventListener('click',runAll);
     $('details-btn').addEventListener('click',toggleDetails);$('copy-btn').addEventListener('click',copyReport);$('copy-full').addEventListener('click',copyReport);
     $('scroll-top').addEventListener('click',function(){window.scrollTo(0,0);});
+    $('guide-top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'auto'});});
+    document.querySelectorAll('[data-complete]').forEach(function(b){b.addEventListener('click',function(){setGuideManual(b.getAttribute('data-complete'),'Looks correct');});});
+    document.querySelectorAll('[data-problem]').forEach(function(b){b.addEventListener('click',function(){setGuideManual(b.getAttribute('data-problem'),'Problem seen');});});
+    document.querySelectorAll('[data-clear]').forEach(function(b){b.addEventListener('click',function(){setGuideManual(b.getAttribute('data-clear'),'Not checked');});});
+    $('evidence-input').addEventListener('change',selectEvidence);$('evidence-export').addEventListener('click',exportEvidence);$('evidence-share').addEventListener('click',shareEvidence);
     $('open-https').addEventListener('click',openHosted);$('make-launcher').addEventListener('click',makeLauncher);
     $('keyboard-btn').addEventListener('click',keyboardFocus);
     $('keyboard-input').addEventListener('focus',function(){if(!keyboard.focused){keyboard.baseline=state.live.vv?state.live.vv.height:null;keyboard.focused=true;}});
     $('keyboard-input').addEventListener('blur',function(){keyboard.focused=false;setText('keyboard-status',keyboard.delta===null?'Keyboard test ended. No viewport change was recorded.':'Keyboard test ended; last recorded visual-height reduction '+px(keyboard.delta));});
-    $('text-btn').addEventListener('click',function(){var active=document.body.classList.toggle('larger-text');$('text-btn').setAttribute('aria-pressed',String(active));$('text-btn').textContent=active?'Normal Text':'Larger Text';
+    $('text-btn').addEventListener('click',function(){var active=document.body.classList.toggle('larger-text');if(active)guidedSeen.zoom=true;$('text-btn').setAttribute('aria-pressed',String(active));$('text-btn').textContent=active?'Normal Text':'Larger Text';
       $('central-panel').style.fontSize=active?'120%':'';schedule();setText('run-log',active?'Larger diagnostic text selected; inspect for overlap and rerun the tests.':'Normal diagnostic text restored.');});
     Array.prototype.slice.call(document.querySelectorAll('#manual-items select')).forEach(function(s){s.addEventListener('change',setManual);});
     window.addEventListener('resize',function(){tracked.resizeEvents++;schedule();},{passive:true});
